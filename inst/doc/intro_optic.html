@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Introduction to OPTIC</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">
+
+div.csl-bib-body { }
+div.csl-entry {
+clear: both;
+}
+.hanging div.csl-entry {
+margin-left:2em;
+text-indent:-2em;
+}
+div.csl-left-margin {
+min-width:2em;
+float:left;
+}
+div.csl-right-inline {
+margin-left:2em;
+padding-left:1em;
+}
+div.csl-indent {
+margin-left: 2em;
+}
+</style>
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Introduction to OPTIC</h1>
+
+
+
+<div id="introduction" class="section level1 unnumbered">
+<h1 class="unnumbered">Introduction</h1>
+<p>This vignette covers the use of the Opioid Policy Tools and
+Information Center (OPTIC) simulation package, which contains tools to
+simulate treatment effects into panel data or repeated measures data and
+examine the performance of commonly-used statistical models. Briefly,
+OPTIC uses Monte Carlo simulations to estimate the performance of models
+typically used for state-level policy evaluation (for example,
+differences-in-differences estimators). Package users provide the
+simulation procedure with a policy evaluation scenario, a hypothetical
+treatment effect, an estimation approach, and simulation parameters. The
+OPTIC package then constructs simulations for all chosen simulation
+parameters and estimators, returning summary statistics on each
+simulation’s performance.</p>
+<p>Currently, OPTIC has been developed for policy evaluation scenarios
+with the following assumptions:</p>
+<ol style="list-style-type: decimal">
+<li><strong>No confounding</strong> : There are no confounding variables
+which determine an observations’s selection into treatment. Treatment
+effects are assumed to be constant rather than time-varying.</li>
+<li><strong>Concurrent policies</strong>: There is one additional policy
+which co-occurs with the policy of-interest.</li>
+<li><strong>Confounding</strong>: There is a confounding variable
+associated with both policy adoption and outcome <em>trends</em>.</li>
+</ol>
+<p>Additional details on the simulation procedures within the OPTIC
+package are available in Griffin et al., 2021 <span class="citation">(Griffin et al. 2021)</span> and Griffin et al., 2022
+<span class="citation">(Griffin et al. 2022)</span>. Forthcoming updates
+to OPTIC will provides simulations which test the effect of confounding
+bias on model performance.</p>
+<p>This README covers the use of OPTIC in R and provides examples of the
+package’s features. Section one covers package installation, section two
+provides a general overview of the package’s usage, and section three
+provides two examples of the package under the different policy
+scenarios described above.</p>
+</div>
+<div id="installation" class="section level1">
+<h1>Installation</h1>
+<p>From an R session, install the package from CRAN with:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;optic&quot;</span>)</span></code></pre></div>
+<p>Or from github:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install remotes if necessary</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(&quot;remotes&quot;)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;RANDCorporation/optic&quot;</span>)</span></code></pre></div>
+</div>
+<div id="overview-of-the-optic-package" class="section level1">
+<h1>Overview of the OPTIC Package</h1>
+<p>OPTIC contains two core functions for performing simulations, which
+require four user-provided inputs. Figure 1 below displays a flowchart
+of OPTIC’s required steps to produce simulation results.</p>
+<center>
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWxuczpsdWNpZD0ibHVjaWQiIHdpZHRoPSIxMDcwLjQ2IiBoZWlnaHQ9IjY2MCI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjAgMTcuMjgzODQzNjA0MjIzNDcpIiBsdWNpZDpwYWdlLXRhYi1pZD0iMF8wIj48cGF0aCBkPSJNMTAwIDQwNS4zMmE2LjkgNi45IDAgMCAxIDUuOTQtNi44M2wxMDguMTItMTQuOTZhNS4yMyA1LjIzIDAgMCAxIDUuOTQgNS4xOHY4OGE2IDYgMCAwIDEtNiA2SDEwNmE2IDYgMCAwIDEtNi02eiIgc3Ryb2tlPSIjM2E0MTRhIiBmaWxsPSIjZmZkOWQ5Ii8+PHVzZSB4bGluazpocmVmPSIjYSIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSwxMDUsNDA0LjM4MjgyMzA2MjQ0MzIpIHRyYW5zbGF0ZSgzLjI3MTYwNDkzODI3MTYwOCAyOC4xMTExMTExMTExMTExMTQpIi8+PHVzZSB4bGluazpocmVmPSIjYiIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSwxMDUsNDA0LjM4MjgyMzA2MjQ0MzIpIHRyYW5zbGF0ZSgtMS4wODAyNDY5MTM1ODAyNTQgNTQuNzc3Nzc3Nzc3Nzc3NzgpIi8+PHBhdGggZD0iTTMwMC40NiAyNjMuNzJhNiA2IDAgMCAxIDYtNmgxMjhhNiA2IDAgMCAxIDYgNnY4OGE2IDYgMCAwIDEtNiA2aC0xMjhhNiA2IDAgMCAxLTYtNnoiIHN0cm9rZT0iIzNhNDE0YSIgZmlsbD0iI2NmZTRmZiIvPjx1c2UgeGxpbms6aHJlZj0iI2MiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLDEsMzEyLjQ2MjQ3NDYyOTA1NDY3LDI2OS43MTc3NzIwMjU4NzU4KSB0cmFuc2xhdGUoMjguNDAxMjM0NTY3OTAxMjM4IDI5LjY1Mjc3Nzc3Nzc3Nzc4KSIvPjx1c2UgeGxpbms6aHJlZj0iI2QiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLDEsMzEyLjQ2MjQ3NDYyOTA1NDY3LDI2OS43MTc3NzIwMjU4NzU4KSB0cmFuc2xhdGUoOC4xMjM0NTY3OTAxMjM0NTYgNTYuMzE5NDQ0NDQ0NDQ0NDUpIi8+PHBhdGggZD0iTTQzNS40NiAyMDUuNjJjMCA1LjU1LTI5LjEgMTAuMDYtNjUgMTAuMDZzLTY1LTQuNS02NS0xMC4wNnYtODAuNWMwLTUuNTUgMjkuMS0xMC4wNiA2NS0xMC4wNnM2NSA0LjUgNjUgMTAuMDd6IiBzdHJva2U9IiMzYTQxNGEiIGZpbGw9IiNmNGQ5ZmYiLz48cGF0aCBkPSJNNDM1LjQ2IDEyNS4xM2MwIDUuNTUtMjkuMSAxMC4wNi02NSAxMC4wNnMtNjUtNC41Mi02NS0xMC4wNyIgc3Ryb2tlPSIjM2E0MTRhIiBmaWxsPSJub25lIi8+PHVzZSB4bGluazpocmVmPSIjZSIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSwzMTAuNDYyNDc0NjI5MDU0NjcsMTQwLjE4NzE1OTc4MDk3ODA4KSB0cmFuc2xhdGUoMTguNzAzNzAzNzAzNzAzNzAyIDI2LjY1Mjc3Nzc3Nzc3Nzc4KSIvPjx1c2UgeGxpbms6aHJlZj0iI2YiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLDEsMzEwLjQ2MjQ3NDYyOTA1NDY3LDE0MC4xODcxNTk3ODA5NzgwOCkgdHJhbnNsYXRlKDM2LjU3NDA3NDA3NDA3NDA3NiA1My4zMTk0NDQ0NDQ0NDQ0NSkiLz48cGF0aCBkPSJNMzcwLjQ2IDIxNy4xOHYyMS41NCIgc3Ryb2tlPSIjM2E0MTRhIiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMzcwLjQ2IDIxNi4xOGwxLS4wMnYxLjA0aC0ydi0xLjA2eiIgc3Ryb2tlPSIjM2E0MTRhIiBzdHJva2Utd2lkdGg9Ii4wNSIgZmlsbD0iIzNhNDE0YSIvPjxwYXRoIGQ9Ik0zNzAuNDYgMjUzLjk4bC00LjYzLTE0LjI2aDkuMjd6IiBzdHJva2U9IiMzYTQxNGEiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0iIzNhNDE0YSIvPjxwYXRoIGQ9Ik0yMjEuNSA0MzIuOTNoMzIuNzNhNiA2IDAgMCAwIDYtNlYzMTMuOWE2IDYgMCAwIDEgNi02aDE1LjIzIiBzdHJva2U9IiMzYTQxNGEiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0yMjEuNTMgNDMzLjkzaC0xLjAzdi0yaDEuMDN6IiBzdHJva2U9IiMzYTQxNGEiIHN0cm9rZS13aWR0aD0iLjA1IiBmaWxsPSIjM2E0MTRhIi8+PHBhdGggZD0iTTI5Ni43MyAzMDcuOWwtMTQuMjcgNC42M3YtOS4yN3oiIHN0cm9rZT0iIzNhNDE0YSIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSIjM2E0MTRhIi8+PHBhdGggZD0iTTEwMC40NiAyNTYuMjRhNi45IDYuOSAwIDAgMSA1Ljk1LTYuODNsMTA4LjEyLTE0Ljk0YTUuMjMgNS4yMyAwIDAgMSA1Ljk0IDUuMTh2ODhhNiA2IDAgMCAxLTYgNmgtMTA4YTYgNiAwIDAgMS02LTZ6IiBzdHJva2U9IiMzYTQxNGEiIGZpbGw9IiNmZmQ5ZDkiLz48dXNlIHhsaW5rOmhyZWY9IiNnIiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLDEwNS40NjI0NzQ2MjkwNTQ2NywyNTUuMzAyODA2MDM5NDgxNDgpIHRyYW5zbGF0ZSgyNS40MDEyMzQ1Njc5MDEyMzQgMjcuMDI3Nzc3Nzc3Nzc3NzgpIi8+PHVzZSB4bGluazpocmVmPSIjaCIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSwxMDUuNDYyNDc0NjI5MDU0NjcsMjU1LjMwMjgwNjAzOTQ4MTQ4KSB0cmFuc2xhdGUoNjYuMDgwMjQ2OTEzNTgwMjUgMjcuMDI3Nzc3Nzc3Nzc3NzgpIi8+PHVzZSB4bGluazpocmVmPSIjaSIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSwxMDUuNDYyNDc0NjI5MDU0NjcsMjU1LjMwMjgwNjAzOTQ4MTQ4KSB0cmFuc2xhdGUoMTkuMjU5MjU5MjU5MjU5MjYgNTMuNjk0NDQ0NDQ0NDQ0NDUpIi8+PHBhdGggZD0iTTIyMS45NiAyODMuODVoMzIuNWE2IDYgMCAwIDEgNiA2djExLjg3YTYgNiAwIDAgMCA2IDZoMTUiIHN0cm9rZT0iIzNhNDE0YSIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTIyMiAyODQuODVoLTEuMDR2LTJIMjIyeiIgc3Ryb2tlPSIjM2E0MTRhIiBzdHJva2Utd2lkdGg9Ii4wNSIgZmlsbD0iIzNhNDE0YSIvPjxwYXRoIGQ9Ik0yOTYuNzMgMzA3LjcybC0xNC4yNyA0LjYzdi05LjI3eiIgc3Ryb2tlPSIjM2E0MTRhIiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9IiMzYTQxNGEiLz48cGF0aCBkPSJNNTAwLjQ2IDI1My40N2MyMy4yNCAxOCAzNy45NCAxOCA0Ni42MiAxOCAxNCAwIDMyLjYyLTE4IDQ2LjYyLTE4IDguODIgMCAyMy4zOCAwIDQ2Ljc2IDE4djkwLjVjLTIzLjM4LTE4LjEyLTM3Ljk0LTE4LjEyLTQ2Ljc2LTE4LjEyLTE0IDAtMzIuNjIgMTguMTItNDYuNjIgMTguMTItOC42OCAwLTIzLjM4IDAtNDYuNjItMTguMTJ6IiBzdHJva2U9IiMzYTQxNGEiIGZpbGw9IiNjM2Y3YzgiLz48dXNlIHhsaW5rOmhyZWY9IiNqIiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLDUwNS40NjI0NzQ2MjkwNTQ2NywyNTguNDY4OTgzNzQ4NDUwMSkgdHJhbnNsYXRlKDEyLjY1NDMyMDk4NzY1NDMzIDM5LjQzNDAyNzc3Nzc3Nzc4KSIvPjx1c2UgeGxpbms6aHJlZj0iI2siIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLDEsNTA1LjQ2MjQ3NDYyOTA1NDY3LDI1OC40Njg5ODM3NDg0NTAxKSB0cmFuc2xhdGUoNTYuOTc1MzA4NjQxOTc1MzEgMzkuNDM0MDI3Nzc3Nzc3NzgpIi8+PHVzZSB4bGluazpocmVmPSIjbCIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSw1MDUuNDYyNDc0NjI5MDU0NjcsMjU4LjQ2ODk4Mzc0ODQ1MDEpIHRyYW5zbGF0ZSgzNS40MDEyMzQ1Njc5MDEyNCA2Ni4xMDA2OTQ0NDQ0NDQ0NikiLz48cGF0aCBkPSJNNzAwLjQ2IDI2Ny45N2E2IDYgMCAwIDEgNi02aDEyOGE2IDYgMCAwIDEgNiA2djg4YTYgNiAwIDAgMS02IDZoLTEyOGE2IDYgMCAwIDEtNi02eiIgc3Ryb2tlPSIjM2E0MTRhIiBmaWxsPSIjY2ZlNGZmIi8+PHVzZSB4bGluazpocmVmPSIjbSIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSw3MTIuNDYyNDc0NjI5MDU0NywyNzMuOTY2NTYwMzAzMzAxNDMpIHRyYW5zbGF0ZSgxMC40OTk5OTk5OTk5OTk5OTMgMjkuNjUyNzc3Nzc3Nzc3NzgpIi8+PHVzZSB4bGluazpocmVmPSIjbiIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSw3MTIuNDYyNDc0NjI5MDU0NywyNzMuOTY2NTYwMzAzMzAxNDMpIHRyYW5zbGF0ZSgyLjU2NzkwMTIzNDU2Nzg5ODQgNTYuMzE5NDQ0NDQ0NDQ0NDUpIi8+PHBhdGggZD0iTTEwMCAxMDcuMTZhNi45IDYuOSAwIDAgMSA1Ljk0LTYuODNsMTA4LjEyLTE0Ljk1YTUuMjMgNS4yMyAwIDAgMSA1Ljk0IDUuMTh2ODhhNiA2IDAgMCAxLTYgNkgxMDZhNiA2IDAgMCAxLTYtNnoiIHN0cm9rZT0iIzNhNDE0YSIgZmlsbD0iI2ZmZDlkOSIvPjx1c2UgeGxpbms6aHJlZj0iI28iIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLDEsMTA1LDEwNi4yMjI3ODkwMTY1MTk3NikgdHJhbnNsYXRlKDQuODc2NTQzMjA5ODc2NTQ0IDI3LjAyNzc3Nzc3Nzc3Nzc4KSIvPjx1c2UgeGxpbms6aHJlZj0iI3AiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLDEsMTA1LDEwNi4yMjI3ODkwMTY1MTk3NikgdHJhbnNsYXRlKDcuNTMwODY0MTk3NTMwODYgNTMuNjk0NDQ0NDQ0NDQ0NDUpIi8+PHBhdGggZD0iTTIyMS41IDEzNC43N2gzMi43M2E2IDYgMCAwIDEgNiA2djE2MC45NWE2IDYgMCAwIDAgNiA2aDE1LjIzIiBzdHJva2U9IiMzYTQxNGEiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0yMjEuNTMgMTM1Ljc3aC0xLjAzdi0yaDEuMDN6IiBzdHJva2U9IiMzYTQxNGEiIHN0cm9rZS13aWR0aD0iLjA1IiBmaWxsPSIjM2E0MTRhIi8+PHBhdGggZD0iTTI5Ni43MyAzMDcuNzJsLTE0LjI3IDQuNjN2LTkuMjd6IiBzdHJva2U9IiMzYTQxNGEiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0iIzNhNDE0YSIvPjxwYXRoIGQ9Ik05MDAuNDYgMjYxLjk3YzIxLjU4IDE2LjYgMzUuMjMgMTYuNiA0My4zIDE2LjYgMTMgMCAzMC4yOC0xNi42IDQzLjI4LTE2LjYgOC4yIDAgMjEuNyAwIDQzLjQyIDE2LjZ2ODMuNGMtMjEuNy0xNi43LTM1LjIzLTE2LjctNDMuNDItMTYuNy0xMyAwLTMwLjMgMTYuNy00My4zIDE2LjctOC4wNSAwLTIxLjcgMC00My4yOC0xNi43eiIgc3Ryb2tlPSIjM2E0MTRhIiBmaWxsPSIjYzNmN2M4Ii8+PHVzZSB4bGluazpocmVmPSIjaiIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSw5MDUuNDYyNDc0NjI5MDU0NywyNjYuOTY2NTYwMzAzMzAxNDMpIHRyYW5zbGF0ZSg1LjE4NTE4NTE4NTE4NTE5MDQgNDguNzE1Mjc3Nzc3Nzc3NzgpIi8+PHVzZSB4bGluazpocmVmPSIjcSIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSw5MDUuNDYyNDc0NjI5MDU0NywyNjYuOTY2NTYwMzAzMzAxNDMpIHRyYW5zbGF0ZSg0OS41MDYxNzI4Mzk1MDYxNyA0OC43MTUyNzc3Nzc3Nzc3OCkiLz48cGF0aCBkPSJNNzYwIDQzOC40NWE2IDYgMCAwIDEgNi02aDI0OC40NmE2IDYgMCAwIDEgNiA2djE3OC4yN2E2IDYgMCAwIDEtNiA2SDc2NmE2IDYgMCAwIDEtNi02eiIgc3Ryb2tlPSIjM2E0MTRhIiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTkwMC40NiA0NTMuMmMxNi42IDEwLjM2IDI3LjEgMTAuMzYgMzMuMyAxMC4zNiAxMCAwIDIzLjMtMTAuMzYgMzMuMy0xMC4zNiA2LjMgMCAxNi43IDAgMzMuNCAxMC4zNnY1Mi4wM2MtMTYuNy0xMC40My0yNy4xLTEwLjQzLTMzLjQtMTAuNDMtMTAgMC0yMy4zIDEwLjQyLTMzLjMgMTAuNDItNi4yIDAtMTYuNyAwLTMzLjMtMTAuNDN6IiBzdHJva2U9IiMzYTQxNGEiIGZpbGw9IiNjM2Y3YzgiLz48dXNlIHhsaW5rOmhyZWY9IiNyIiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLDkwNS40NjI0NzQ2MjkwNTQ3LDQ1OC4xOTc2MDEwODcxMzU2KSB0cmFuc2xhdGUoMi41NjE3MjgzOTUwNjE3NDkgMzEuMDI3Nzc3Nzc3Nzc3NzcpIi8+PHBhdGggZD0iTTc4MC40NiA0NjQuMDVhNi44IDYuOCAwIDAgMSA1Ljk1LTYuNzVsODguMS0xMS4xMmE1LjMgNS4zIDAgMCAxIDUuOTYgNS4yNXY2NGE2IDYgMCAwIDEtNiA2aC04OGE2IDYgMCAwIDEtNi02eiIgc3Ryb2tlPSIjM2E0MTRhIiBmaWxsPSIjZmZkOWQ5Ii8+PHVzZSB4bGluazpocmVmPSIjcyIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSw3ODUuNDYyNDc0NjI5MDU0Nyw0NjMuMDk3MTA4Nzc2NzI5KSB0cmFuc2xhdGUoMjAuMzM5NTA2MTcyODM5NTEzIDIxLjE1Mjc3Nzc3Nzc3Nzc3KSIvPjx1c2UgeGxpbms6aHJlZj0iI3QiIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLDEsNzg1LjQ2MjQ3NDYyOTA1NDcsNDYzLjA5NzEwODc3NjcyOSkgdHJhbnNsYXRlKDE3Ljk2Mjk2Mjk2Mjk2Mjk3MyA0Ny44MTk0NDQ0NDQ0NDQ0MykiLz48cGF0aCBkPSJNNzgwLjQ2IDU0Ny4xN2E2IDYgMCAwIDEgNi02aDg4YTYgNiAwIDAgMSA2IDZ2NDkuNGE2IDYgMCAwIDEtNiA2aC04OGE2IDYgMCAwIDEtNi02eiIgc3Ryb2tlPSIjM2E0MTRhIiBmaWxsPSIjY2ZlNGZmIi8+PHVzZSB4bGluazpocmVmPSIjdSIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSw3OTIuNDYyNDc0NjI5MDU0Nyw1NTMuMTczMjE0MjE4OTA2MSkgdHJhbnNsYXRlKC04LjcyODM5NTA2MTcyODM3OCAyMy40NDQ0NDQ0NDQ0NDQ0NDMpIi8+PHBhdGggZD0iTTEwMDAuNDYgNTk3LjgzYzAgMy40Ny0yMi4zOCA2LjMtNTAgNi4zLTI3LjYgMC01MC0yLjgzLTUwLTYuM3YtNTAuMzZjMC0zLjQ4IDIyLjQtNi4zIDUwLTYuMyAyNy42MiAwIDUwIDIuODIgNTAgNi4zeiIgc3Ryb2tlPSIjM2E0MTRhIiBmaWxsPSIjZjRkOWZmIi8+PHBhdGggZD0iTTEwMDAuNDYgNTQ3LjQ3YzAgMy40OC0yMi4zOCA2LjMtNTAgNi4zLTI3LjYgMC01MC0yLjgyLTUwLTYuMyIgc3Ryb2tlPSIjM2E0MTRhIiBmaWxsPSJub25lIi8+PHVzZSB4bGluazpocmVmPSIjdiIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSw5MDUuNDYyNDc0NjI5MDU0Nyw1NTguNzYyODE1OTA0OTczNCkgdHJhbnNsYXRlKDQuOTY5MTM1ODAyNDY5MTYxIDI1LjQ2NTI3Nzc3Nzc3Nzc3KSIvPjxwYXRoIGQ9Ik03NzAuNDYgMzg4LjcyYTYgNiAwIDAgMSA2LTZoMjI4YTYgNiAwIDAgMSA2IDZ2NDhhNiA2IDAgMCAxLTYgNmgtMjI4YTYgNiAwIDAgMS02LTZ6IiBzdHJva2U9IiMwMDAiIHN0cm9rZS1vcGFjaXR5PSIwIiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAiLz48dXNlIHhsaW5rOmhyZWY9IiN3IiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLDc3NS40NjI0NzQ2MjkwNTQ3LDM4Ny43MTYxNTYzOTU3NzY1KSB0cmFuc2xhdGUoNjcuNzQwNzQwNzQwNzQwNzYgMzAuNzA4MzMzMzMzMzMzMzMpIi8+PHBhdGggZD0iTTEwMC40NiA1NTAuNzRhNi42OCA2LjY4IDAgMCAxIDUuOTctNi42NWwxMDguMDctMTEuNjZhNS40IDUuNCAwIDAgMSA1Ljk2IDUuMzZ2NjUuOTRhNiA2IDAgMCAxLTYgNmgtMTA4YTYgNiAwIDAgMS02LTZ6IiBzdHJva2U9IiMzYTQxNGEiIGZpbGw9IiNmZmQ5ZDkiLz48dXNlIHhsaW5rOmhyZWY9IiNhIiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLDEwNS40NjI0NzQ2MjkwNTQ2Nyw1NDkuNzg2NTM2MjMwNTI5OSkgdHJhbnNsYXRlKDMuMjcxNjA0OTM4MjcxNjA4IDIxLjIxNTI3Nzc3Nzc3Nzc4KSIvPjx1c2UgeGxpbms6aHJlZj0iI3giIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLDEsMTA1LjQ2MjQ3NDYyOTA1NDY3LDU0OS43ODY1MzYyMzA1Mjk5KSB0cmFuc2xhdGUoMTcuOTkzODI3MTYwNDkzODMgNDcuODgxOTQ0NDQ0NDQ0NDQpIi8+PHBhdGggZD0iTTIyMS45NiA1NzAuOTRoMzIuNWE2IDYgMCAwIDAgNi02VjMxMy43MmE2IDYgMCAwIDEgNi02aDE1IiBzdHJva2U9IiMzYTQxNGEiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0yMjIgNTcxLjk0aC0xLjA0di0ySDIyMnoiIHN0cm9rZT0iIzNhNDE0YSIgc3Ryb2tlLXdpZHRoPSIuMDUiIGZpbGw9IiMzYTQxNGEiLz48cGF0aCBkPSJNMjk2LjczIDMwNy43MmwtMTQuMjcgNC42M3YtOS4yN3oiIHN0cm9rZT0iIzNhNDE0YSIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSIjM2E0MTRhIi8+PHBhdGggZD0iTTQ0MS45NiAzMDcuNzJoMzkuNSIgc3Ryb2tlPSIjM2E0MTRhIiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNNDQyIDMwOC43MmgtMS4wNHYtMkg0NDJ6IiBzdHJva2U9IiMzYTQxNGEiIHN0cm9rZS13aWR0aD0iLjA1IiBmaWxsPSIjM2E0MTRhIi8+PHBhdGggZD0iTTQ5Ni43MyAzMDcuNzJsLTE0LjI3IDQuNjN2LTkuMjd6IiBzdHJva2U9IiMzYTQxNGEiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0iIzNhNDE0YSIvPjxwYXRoIGQ9Ik02NDEuOTYgMzA3LjcyaDM5LjUiIHN0cm9rZT0iIzNhNDE0YSIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTY0MiAzMDguNzJoLTEuMDR2LTJINjQyeiIgc3Ryb2tlPSIjM2E0MTRhIiBzdHJva2Utd2lkdGg9Ii4wNSIgZmlsbD0iIzNhNDE0YSIvPjxwYXRoIGQ9Ik02OTYuNzMgMzA3LjcybC0xNC4yNyA0LjYzdi05LjI3eiIgc3Ryb2tlPSIjM2E0MTRhIiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9IiMzYTQxNGEiLz48cGF0aCBkPSJNODQxLjk2IDMxMS45N2gzOS41IiBzdHJva2U9IiMzYTQxNGEiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik04NDIgMzEyLjk3aC0xLjA0di0ySDg0MnoiIHN0cm9rZT0iIzNhNDE0YSIgc3Ryb2tlLXdpZHRoPSIuMDUiIGZpbGw9IiMzYTQxNGEiLz48cGF0aCBkPSJNODk2LjczIDMxMS45N2wtMTQuMjcgNC42M3YtOS4yN3oiIHN0cm9rZT0iIzNhNDE0YSIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSIjM2E0MTRhIi8+PHBhdGggZD0iTTAgOC43MmE2IDYgMCAwIDEgNi02aDM0OGE2IDYgMCAwIDEgNiA2djgzLjMzYTYgNiAwIDAgMS02IDZINmE2IDYgMCAwIDEtNi02eiIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utb3BhY2l0eT0iMCIgZmlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIwIi8+PGc+PHVzZSB4bGluazpocmVmPSIjeSIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSw1LDcuNzE2MTU2Mzk1Nzc2NTMpIHRyYW5zbGF0ZSg3My4zNzAzNzAzNzAzNzA0MSA0OS45NDQ0NDQ0NDQ0NDQ0MzYpIi8+PHVzZSB4bGluazpocmVmPSIjeiIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSw1LDcuNzE2MTU2Mzk1Nzc2NTMpIHRyYW5zbGF0ZSgxOTEuNjkxMzU4MDI0NjkxMzcgNDkuOTQ0NDQ0NDQ0NDQ0NDM2KSIvPjwvZz48ZGVmcz48cGF0aCBmaWxsPSIjM2E0MTRhIiBkPSJNMTg1LTE4OWMtNS00OC0xMjMtNTQtMTI0IDIgMTQgNzUgMTU4IDE0IDE2MyAxMTkgMyA3OC0xMjEgODctMTc1IDU1LTE3LTEwLTI4LTI2LTMzLTQ2bDMzLTdjNSA1NiAxNDEgNjMgMTQxLTEgMC03OC0xNTUtMTQtMTYyLTExOC01LTgyIDE0NS04NCAxNzktMzQgNSA3IDggMTYgMTEgMjUiIGlkPSJBIi8+PHBhdGggZmlsbD0iIzNhNDE0YSIgZD0iTTI0LTIzMXYtMzBoMzJ2MzBIMjR6TTI0IDB2LTE5MGgzMlYwSDI0IiBpZD0iQiIvPjxwYXRoIGZpbGw9IiMzYTQxNGEiIGQ9Ik0yMTAtMTY5Yy02NyAzLTM4IDEwNS00NCAxNjloLTMxdi0xMjFjMC0yOS01LTUwLTM1LTQ4QzM0LTE2NSA2Mi02NSA1NiAwSDI1bC0xLTE5MGgzMGMxIDEwLTEgMjQgMiAzMiAxMC00NCA5OS01MCAxMDcgMCAxMS0yMSAyNy0zNSA1OC0zNiA4NS0yIDQ3IDExOSA1NSAxOTRoLTMxdi0xMjFjMC0yOS01LTQ5LTM1LTQ4IiBpZD0iQyIvPjxwYXRoIGZpbGw9IiMzYTQxNGEiIGQ9Ik04NCA0Qy01IDggMzAtMTEyIDIzLTE5MGgzMnYxMjBjMCAzMSA3IDUwIDM5IDQ5IDcyLTIgNDUtMTAxIDUwLTE2OWgzMWwxIDE5MGgtMzBjLTEtMTAgMS0yNS0yLTMzLTExIDIyLTI4IDM2LTYwIDM3IiBpZD0iRCIvPjxwYXRoIGZpbGw9IiMzYTQxNGEiIGQ9Ik0yNCAwdi0yNjFoMzJWMEgyNCIgaWQ9IkUiLz48cGF0aCBmaWxsPSIjM2E0MTRhIiBkPSJNMTQxLTM2QzEyNi0xNSAxMTAgNSA3MyA0IDM3IDMgMTUtMTcgMTUtNTNjLTEtNjQgNjMtNjMgMTI1LTYzIDMtMzUtOS01NC00MS01NC0yNCAxLTQxIDctNDIgMzFsLTMzLTNjNS0zNyAzMy01MiA3Ni01MiA0NSAwIDcyIDIwIDcyIDY0djgyYy0xIDIwIDcgMzIgMjggMjd2MjBjLTMxIDktNjEtMi01OS0zNXpNNDgtNTNjMCAyMCAxMiAzMyAzMiAzMyA0MS0zIDYzLTI5IDYwLTc0LTQzIDItOTItNS05MiA0MSIgaWQ9IkYiLz48cGF0aCBmaWxsPSIjM2E0MTRhIiBkPSJNNTktNDdjLTIgMjQgMTggMjkgMzggMjJ2MjRDNjQgOSAyNyA0IDI3LTQwdi0xMjdINXYtMjNoMjRsOS00M2gyMXY0M2gzNXYyM0g1OXYxMjAiIGlkPSJHIi8+PHBhdGggZmlsbD0iIzNhNDE0YSIgZD0iTTEwMC0xOTRjNjItMSA4NSAzNyA4NSA5OSAxIDYzLTI3IDk5LTg2IDk5UzE2LTM1IDE1LTk1YzAtNjYgMjgtOTkgODUtOTl6TTk5LTIwYzQ0IDEgNTMtMzEgNTMtNzUgMC00My04LTc1LTUxLTc1cy01MyAzMi01MyA3NSAxMCA3NCA1MSA3NSIgaWQ9IkgiLz48cGF0aCBmaWxsPSIjM2E0MTRhIiBkPSJNMTE3LTE5NGM4OS00IDUzIDExNiA2MCAxOTRoLTMydi0xMjFjMC0zMS04LTQ5LTM5LTQ4QzM0LTE2NyA2Mi02NyA1NyAwSDI1bC0xLTE5MGgzMGMxIDEwLTEgMjQgMiAzMiAxMS0yMiAyOS0zNSA2MS0zNiIgaWQ9IkkiLz48ZyBpZD0iYSI+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDAsMCkiIHhsaW5rOmhyZWY9IiNBIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDE0LjgxNDgxNDgxNDgxNDgxMywwKSIgeGxpbms6aHJlZj0iI0IiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMTkuNjkxMzU4MDI0NjkxMzU0LDApIiB4bGluazpocmVmPSIjQyIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwzOC4xNDgxNDgxNDgxNDgxNCwwKSIgeGxpbms6aHJlZj0iI0QiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksNTAuNDkzODI3MTYwNDkzODE1LDApIiB4bGluazpocmVmPSIjRSIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSw1NS4zNzAzNzAzNzAzNzAzNiwwKSIgeGxpbms6aHJlZj0iI0YiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksNjcuNzE2MDQ5MzgyNzE2MDQsMCkiIHhsaW5rOmhyZWY9IiNHIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDczLjg4ODg4ODg4ODg4ODg3LDApIiB4bGluazpocmVmPSIjQiIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSw3OC43NjU0MzIwOTg3NjU0MiwwKSIgeGxpbms6aHJlZj0iI0giLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksOTEuMTExMTExMTExMTExMSwwKSIgeGxpbms6aHJlZj0iI0kiLz48L2c+PHBhdGggZmlsbD0iIzNhNDE0YSIgZD0iTTExNS0xOTRjNTUgMSA3MCA0MSA3MCA5OFMxNjkgMiAxMTUgNEM4NCA0IDY2LTkgNTUtMzBsMSAxMDVIMjRsLTEtMjY1aDMxbDIgMzBjMTAtMjEgMjgtMzQgNTktMzR6bS04IDE3NGM0MCAwIDQ1LTM0IDQ1LTc1cy02LTczLTQ1LTc0Yy00MiAwLTUxIDMyLTUxIDc2IDAgNDMgMTAgNzMgNTEgNzMiIGlkPSJKIi8+PHBhdGggZmlsbD0iIzNhNDE0YSIgZD0iTTExNC0xNjNDMzYtMTc5IDYxLTcyIDU3IDBIMjVsLTEtMTkwaDMwYzEgMTItMSAyOSAyIDM5IDYtMjcgMjMtNDkgNTgtNDF2MjkiIGlkPSJLIi8+PHBhdGggZmlsbD0iIzNhNDE0YSIgZD0iTTEwMC0xOTRjNjMgMCA4NiA0MiA4NCAxMDZINDljMCA0MCAxNCA2NyA1MyA2OCAyNiAxIDQzLTEyIDQ5LTI5bDI4IDhjLTExIDI4LTM3IDQ1LTc3IDQ1QzQ0IDQgMTQtMzMgMTUtOTZjMS02MSAyNi05OCA4NS05OHptNTIgODFjNi02MC03Ni03Ny05Ny0yOC0zIDctNiAxNy02IDI4aDEwMyIgaWQ9IkwiLz48cGF0aCBmaWxsPSIjM2E0MTRhIiBkPSJNMTM1LTE0M2MtMy0zNC04Ni0zOC04NyAwIDE1IDUzIDExNSAxMiAxMTkgOTBTMTcgMjEgMTAtNDVsMjgtNWM0IDM2IDk3IDQ1IDk4IDAtMTAtNTYtMTEzLTE1LTExOC05MC00LTU3IDgyLTYzIDEyMi00MiAxMiA3IDIxIDE5IDI0IDM1IiBpZD0iTSIvPjxnIGlkPSJiIj48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwKSIgeGxpbms6aHJlZj0iI0oiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMTIuMzQ1Njc5MDEyMzQ1Njc5LDApIiB4bGluazpocmVmPSIjRiIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwyNC42OTEzNTgwMjQ2OTEzNTgsMCkiIHhsaW5rOmhyZWY9IiNLIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDMyLjAzNzAzNzAzNzAzNzA0LDApIiB4bGluazpocmVmPSIjRiIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSw0NC4zODI3MTYwNDkzODI3MTUsMCkiIHhsaW5rOmhyZWY9IiNDIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDYyLjgzOTUwNjE3MjgzOTUwNiwwKSIgeGxpbms6aHJlZj0iI0wiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksNzUuMTg1MTg1MTg1MTg1MTksMCkiIHhsaW5rOmhyZWY9IiNHIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDgxLjM1ODAyNDY5MTM1ODAzLDApIiB4bGluazpocmVmPSIjTCIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSw5My43MDM3MDM3MDM3MDM3MSwwKSIgeGxpbms6aHJlZj0iI0siLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMTAxLjA0OTM4MjcxNjA0OTQsMCkiIHhsaW5rOmhyZWY9IiNNIi8+PC9nPjxwYXRoIGZpbGw9IiMzYTQxNGEiIGQ9Ik05Ni0xNjljLTQwIDAtNDggMzMtNDggNzNzOSA3NSA0OCA3NWMyNCAwIDQxLTE0IDQzLTM4bDMyIDJjLTYgMzctMzEgNjEtNzQgNjEtNTkgMC03Ni00MS04Mi05OS0xMC05MyAxMDEtMTMxIDE0Ny02NCA0IDcgNSAxNCA3IDIybC0zMiAzYy00LTIxLTE2LTM1LTQxLTM1IiBpZD0iTiIvPjxwYXRoIGZpbGw9IiMzYTQxNGEiIGQ9Ik0tNSA3MlY0OWgyMDl2MjNILTUiIGlkPSJPIi8+PGcgaWQ9ImMiPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDApIiB4bGluazpocmVmPSIjSCIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwxMi4zNDU2NzkwMTIzNDU2NzksMCkiIHhsaW5rOmhyZWY9IiNKIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDI0LjY5MTM1ODAyNDY5MTM1OCwwKSIgeGxpbms6aHJlZj0iI0ciLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMzAuODY0MTk3NTMwODY0MTk2LDApIiB4bGluazpocmVmPSIjQiIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwzNS43NDA3NDA3NDA3NDA3NCwwKSIgeGxpbms6aHJlZj0iI04iLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksNDYuODUxODUxODUxODUxODUsMCkiIHhsaW5rOmhyZWY9IiNPIi8+PC9nPjxnIGlkPSJkIj48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwKSIgeGxpbms6aHJlZj0iI00iLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMTEuMTExMTExMTExMTExMTEsMCkiIHhsaW5rOmhyZWY9IiNCIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDE1Ljk4NzY1NDMyMDk4NzY1MywwKSIgeGxpbms6aHJlZj0iI0MiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMzQuNDQ0NDQ0NDQ0NDQ0NDQsMCkiIHhsaW5rOmhyZWY9IiNEIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDQ2Ljc5MDEyMzQ1Njc5MDEyLDApIiB4bGluazpocmVmPSIjRSIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSw1MS42NjY2NjY2NjY2NjY2NjQsMCkiIHhsaW5rOmhyZWY9IiNGIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDY0LjAxMjM0NTY3OTAxMjM0LDApIiB4bGluazpocmVmPSIjRyIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSw3MC4xODUxODUxODUxODUxOCwwKSIgeGxpbms6aHJlZj0iI0IiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksNzUuMDYxNzI4Mzk1MDYxNzIsMCkiIHhsaW5rOmhyZWY9IiNIIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDg3LjQwNzQwNzQwNzQwNzQsMCkiIHhsaW5rOmhyZWY9IiNJIi8+PC9nPjxwYXRoIGZpbGw9IiMzYTQxNGEiIGQ9Ik0yMDUgMGwtMjgtNzJINjRMMzYgMEgxbDEwMS0yNDhoMzhMMjM5IDBoLTM0em0tMzgtOTlsLTQ3LTEyM2MtMTIgNDUtMzEgODItNDYgMTIzaDkzIiBpZD0iUCIvPjxwYXRoIGZpbGw9IiMzYTQxNGEiIGQ9Ik0xNzktMTkwTDkzIDMxQzc5IDU5IDU2IDgyIDEyIDczVjQ5YzM5IDYgNTMtMjAgNjQtNTBMMS0xOTBoMzRMOTItMzRsNTQtMTU2aDMzIiBpZD0iUSIvPjxnIGlkPSJlIj48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwKSIgeGxpbms6aHJlZj0iI1AiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMTQuODE0ODE0ODE0ODE0ODEzLDApIiB4bGluazpocmVmPSIjSSIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwyNy4xNjA0OTM4MjcxNjA0OTQsMCkiIHhsaW5rOmhyZWY9IiNGIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDM5LjUwNjE3MjgzOTUwNjE3LDApIiB4bGluazpocmVmPSIjRSIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSw0NC4zODI3MTYwNDkzODI3MTUsMCkiIHhsaW5rOmhyZWY9IiNRIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDU1LjQ5MzgyNzE2MDQ5MzgyLDApIiB4bGluazpocmVmPSIjTSIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSw2Ni42MDQ5MzgyNzE2MDQ5NCwwKSIgeGxpbms6aHJlZj0iI0IiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksNzEuNDgxNDgxNDgxNDgxNDgsMCkiIHhsaW5rOmhyZWY9IiNNIi8+PC9nPjxwYXRoIGZpbGw9IiMzYTQxNGEiIGQ9Ik0zMC0yNDhjMTE4LTcgMjE2IDggMjEzIDEyMkMyNDAtNDggMjAwIDAgMTIyIDBIMzB2LTI0OHpNNjMtMjdjODkgOCAxNDYtMTYgMTQ2LTk5cy02MC0xMDEtMTQ2LTk1djE5NCIgaWQ9IlIiLz48ZyBpZD0iZiI+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDAsMCkiIHhsaW5rOmhyZWY9IiNSIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDE1Ljk4NzY1NDMyMDk4NzY1MywwKSIgeGxpbms6aHJlZj0iI0YiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMjguMzMzMzMzMzMzMzMzMzMyLDApIiB4bGluazpocmVmPSIjRyIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwzNC41MDYxNzI4Mzk1MDYxNywwKSIgeGxpbms6aHJlZj0iI0YiLz48L2c+PHBhdGggZmlsbD0iIzNhNDE0YSIgZD0iTTMwIDB2LTI0OGgzM3YyMjFoMTI1VjBIMzAiIGlkPSJTIi8+PGcgaWQ9ImciPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDApIiB4bGluazpocmVmPSIjUyIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwxMi4zNDU2NzkwMTIzNDU2NzksMCkiIHhsaW5rOmhyZWY9IiNCIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDE3LjIyMjIyMjIyMjIyMjIyLDApIiB4bGluazpocmVmPSIjTSIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwyOC4zMzMzMzMzMzMzMzMzMzIsMCkiIHhsaW5rOmhyZWY9IiNHIi8+PC9nPjxwYXRoIGZpbGw9IiMzYTQxNGEiIGQ9Ik0xMDEtMjM0Yy0zMS05LTQyIDEwLTM4IDQ0aDM4djIzSDYzVjBIMzJ2LTE2N0g1di0yM2gyN2MtNy01MiAxNy04MiA2OS02OHYyNCIgaWQ9IlQiLz48ZyBpZD0iaCI+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDAsMCkiIHhsaW5rOmhyZWY9IiNIIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDEyLjM0NTY3OTAxMjM0NTY3OSwwKSIgeGxpbms6aHJlZj0iI1QiLz48L2c+PHBhdGggZmlsbD0iIzNhNDE0YSIgZD0iTTg1LTE5NGMzMSAwIDQ4IDEzIDYwIDMzbC0xLTEwMGgzMmwxIDI2MWgtMzBjLTItMTAgMC0yMy0zLTMxQzEzNC04IDExNiA0IDg1IDQgMzIgNCAxNi0zNSAxNS05NGMwLTY2IDIzLTEwMCA3MC0xMDB6bTkgMjRjLTQwIDAtNDYgMzQtNDYgNzUgMCA0MCA2IDc0IDQ1IDc0IDQyIDAgNTEtMzIgNTEtNzYgMC00Mi05LTc0LTUwLTczIiBpZD0iVSIvPjxnIGlkPSJpIj48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwKSIgeGxpbms6aHJlZj0iI0MiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMTguNDU2NzkwMTIzNDU2Nzg4LDApIiB4bGluazpocmVmPSIjSCIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwzMC44MDI0NjkxMzU4MDI0NywwKSIgeGxpbms6aHJlZj0iI1UiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksNDMuMTQ4MTQ4MTQ4MTQ4MTQ1LDApIiB4bGluazpocmVmPSIjTCIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSw1NS40OTM4MjcxNjA0OTM4MiwwKSIgeGxpbms6aHJlZj0iI0UiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksNjAuMzcwMzcwMzcwMzcwMzcsMCkiIHhsaW5rOmhyZWY9IiNNIi8+PC9nPjxnIGlkPSJqIj48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwKSIgeGxpbms6aHJlZj0iI0EiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMTQuODE0ODE0ODE0ODE0ODEzLDApIiB4bGluazpocmVmPSIjQiIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwxOS42OTEzNTgwMjQ2OTEzNTQsMCkiIHhsaW5rOmhyZWY9IiNDIi8+PC9nPjxnIGlkPSJrIj48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwKSIgeGxpbms6aHJlZj0iI0MiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMTguNDU2NzkwMTIzNDU2Nzg4LDApIiB4bGluazpocmVmPSIjSCIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwzMC44MDI0NjkxMzU4MDI0NywwKSIgeGxpbms6aHJlZj0iI1UiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksNDMuMTQ4MTQ4MTQ4MTQ4MTQ1LDApIiB4bGluazpocmVmPSIjTCIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSw1NS40OTM4MjcxNjA0OTM4MiwwKSIgeGxpbms6aHJlZj0iI0UiLz48L2c+PHBhdGggZmlsbD0iIzNhNDE0YSIgZD0iTTExNS0xOTRjNTMgMCA2OSAzOSA3MCA5OCAwIDY2LTIzIDEwMC03MCAxMDBDODQgMyA2Ni03IDU2LTMwTDU0IDBIMjNsMS0yNjFoMzJ2MTAxYzEwLTIzIDI4LTM0IDU5LTM0em0tOCAxNzRjNDAgMCA0NS0zNCA0NS03NSAwLTQwLTUtNzUtNDUtNzQtNDIgMC01MSAzMi01MSA3NiAwIDQzIDEwIDczIDUxIDczIiBpZD0iViIvPjxwYXRoIGZpbGw9IiMzYTQxNGEiIGQ9Ik0yNC0yMzF2LTMwaDMydjMwSDI0ek0tOSA0OWMyNCA0IDMzLTYgMzMtMzB2LTIwOWgzMlYyNGMyIDQwLTIzIDU4LTY1IDQ5VjQ5IiBpZD0iVyIvPjxnIGlkPSJsIj48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwKSIgeGxpbms6aHJlZj0iI0giLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMTIuMzQ1Njc5MDEyMzQ1Njc5LDApIiB4bGluazpocmVmPSIjViIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwyNC42OTEzNTgwMjQ2OTEzNTgsMCkiIHhsaW5rOmhyZWY9IiNXIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDI5LjU2NzkwMTIzNDU2NzksMCkiIHhsaW5rOmhyZWY9IiNMIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDQxLjkxMzU4MDI0NjkxMzU3NSwwKSIgeGxpbms6aHJlZj0iI04iLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksNTMuMDI0NjkxMzU4MDI0NjgsMCkiIHhsaW5rOmhyZWY9IiNHIi8+PC9nPjxwYXRoIGZpbGw9IiMzYTQxNGEiIGQ9Ik0xMDYtMTY5QzM0LTE2OSA2Mi02NyA1NyAwSDI1di0yNjFoMzJsLTEgMTAzYzEyLTIxIDI4LTM2IDYxLTM2IDg5IDAgNTMgMTE2IDYwIDE5NGgtMzJ2LTEyMWMyLTMyLTgtNDktMzktNDgiIGlkPSJYIi8+PGcgaWQ9Im0iPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDApIiB4bGluazpocmVmPSIjVSIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwxMi4zNDU2NzkwMTIzNDU2NzksMCkiIHhsaW5rOmhyZWY9IiNCIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDE3LjIyMjIyMjIyMjIyMjIyLDApIiB4bGluazpocmVmPSIjTSIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwyOC4zMzMzMzMzMzMzMzMzMzIsMCkiIHhsaW5rOmhyZWY9IiNKIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDQwLjY3OTAxMjM0NTY3OTAxLDApIiB4bGluazpocmVmPSIjRiIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSw1My4wMjQ2OTEzNTgwMjQ2OSwwKSIgeGxpbms6aHJlZj0iI0ciLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksNTkuMTk3NTMwODY0MTk3NTMsMCkiIHhsaW5rOmhyZWY9IiNOIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDcwLjMwODY0MTk3NTMwODY1LDApIiB4bGluazpocmVmPSIjWCIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSw4Mi42NTQzMjA5ODc2NTQzMywwKSIgeGxpbms6aHJlZj0iI08iLz48L2c+PGcgaWQ9Im4iPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDApIiB4bGluazpocmVmPSIjTSIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwxMS4xMTExMTExMTExMTExMSwwKSIgeGxpbms6aHJlZj0iI0IiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMTUuOTg3NjU0MzIwOTg3NjUzLDApIiB4bGluazpocmVmPSIjQyIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwzNC40NDQ0NDQ0NDQ0NDQ0NCwwKSIgeGxpbms6aHJlZj0iI0QiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksNDYuNzkwMTIzNDU2NzkwMTIsMCkiIHhsaW5rOmhyZWY9IiNFIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDUxLjY2NjY2NjY2NjY2NjY2NCwwKSIgeGxpbms6aHJlZj0iI0YiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksNjQuMDEyMzQ1Njc5MDEyMzQsMCkiIHhsaW5rOmhyZWY9IiNHIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDcwLjE4NTE4NTE4NTE4NTE4LDApIiB4bGluazpocmVmPSIjQiIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSw3NS4wNjE3MjgzOTUwNjE3MiwwKSIgeGxpbms6aHJlZj0iI0giLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksODcuNDA3NDA3NDA3NDA3NCwwKSIgeGxpbms6aHJlZj0iI0kiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksOTkuNzUzMDg2NDE5NzUzMDksMCkiIHhsaW5rOmhyZWY9IiNNIi8+PC9nPjxwYXRoIGZpbGw9IiMzYTQxNGEiIGQ9Ik0xMjctMjIwVjBIOTN2LTIyMEg4di0yOGgyMDR2MjhoLTg1IiBpZD0iWSIvPjxnIGlkPSJvIj48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwKSIgeGxpbms6aHJlZj0iI1kiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMTIuNzE2MDQ5MzgyNzE2MDQ3LDApIiB4bGluazpocmVmPSIjSyIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwyMC4wNjE3MjgzOTUwNjE3MjgsMCkiIHhsaW5rOmhyZWY9IiNMIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDMyLjQwNzQwNzQwNzQwNzQwNSwwKSIgeGxpbms6aHJlZj0iI0YiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksNDQuNzUzMDg2NDE5NzUzMDgsMCkiIHhsaW5rOmhyZWY9IiNHIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDUwLjkyNTkyNTkyNTkyNTkyNCwwKSIgeGxpbms6aHJlZj0iI0MiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksNjkuMzgyNzE2MDQ5MzgyNzEsMCkiIHhsaW5rOmhyZWY9IiNMIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDgxLjcyODM5NTA2MTcyODM5LDApIiB4bGluazpocmVmPSIjSSIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSw5NC4wNzQwNzQwNzQwNzQwOCwwKSIgeGxpbms6aHJlZj0iI0ciLz48L2c+PGcgaWQ9InAiPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDApIiB4bGluazpocmVmPSIjTSIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwxMS4xMTExMTExMTExMTExMSwwKSIgeGxpbms6aHJlZj0iI04iLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMjIuMjIyMjIyMjIyMjIyMjIsMCkiIHhsaW5rOmhyZWY9IiNMIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDM0LjU2NzkwMTIzNDU2NzksMCkiIHhsaW5rOmhyZWY9IiNJIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDQ2LjkxMzU4MDI0NjkxMzU3NSwwKSIgeGxpbms6aHJlZj0iI0YiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksNTkuMjU5MjU5MjU5MjU5MjUsMCkiIHhsaW5rOmhyZWY9IiNLIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDY2LjYwNDkzODI3MTYwNDk0LDApIiB4bGluazpocmVmPSIjQiIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSw3MS40ODE0ODE0ODE0ODE0OCwwKSIgeGxpbms6aHJlZj0iI0giLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksODMuODI3MTYwNDkzODI3MTcsMCkiIHhsaW5rOmhyZWY9IiNNIi8+PC9nPjxnIGlkPSJxIj48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwKSIgeGxpbms6aHJlZj0iI0siLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksNy4zNDU2NzkwMTIzNDU2NzksMCkiIHhsaW5rOmhyZWY9IiNMIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDE5LjY5MTM1ODAyNDY5MTM1OCwwKSIgeGxpbms6aHJlZj0iI00iLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMzAuODAyNDY5MTM1ODAyNDcsMCkiIHhsaW5rOmhyZWY9IiNEIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDQzLjE0ODE0ODE0ODE0ODE0NSwwKSIgeGxpbms6aHJlZj0iI0UiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksNDguMDI0NjkxMzU4MDI0NjksMCkiIHhsaW5rOmhyZWY9IiNHIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDU0LjE5NzUzMDg2NDE5NzUzLDApIiB4bGluazpocmVmPSIjTSIvPjwvZz48cGF0aCBmaWxsPSIjM2E0MTRhIiBkPSJNMTQwLTI1MWM4MCAwIDEyNSA0NSAxMjUgMTI2UzIxOSA0IDEzOSA0QzU4IDQgMTUtNDQgMTUtMTI1czQ0LTEyNiAxMjUtMTI2em0tMSAyMTRjNTIgMCA3My0zNSA3My04OCAwLTUwLTIxLTg2LTcyLTg2LTUyIDAtNzMgMzUtNzMgODZzMjIgODggNzIgODgiIGlkPSJaIi8+PHBhdGggZmlsbD0iIzNhNDE0YSIgZD0iTTg1IDRDLTIgNSAyNy0xMDkgMjItMTkwaDUwYzcgNTctMjMgMTUwIDMzIDE1NyA2MC01IDM1LTk3IDQwLTE1N2g1MGwxIDE5MGgtNDdjLTItMTIgMS0yOC0zLTM4LTEyIDI1LTI4IDQyLTYxIDQyIiBpZD0iYWEiLz48cGF0aCBmaWxsPSIjM2E0MTRhIiBkPSJNMTE1LTNDNzkgMTEgMjggNCAyOC00NXYtMTEySDR2LTMzaDI3bDE1LTQ1aDMxdjQ1aDM2djMzSDc3djk5Yy0xIDIzIDE2IDMxIDM4IDI1djMwIiBpZD0iYWIiLz48cGF0aCBmaWxsPSIjM2E0MTRhIiBkPSJNMTM1LTE5NGM1MyAwIDcwIDQ0IDcwIDk4IDAgNTYtMTkgOTgtNzMgMTAwLTMxIDEtNDUtMTctNTktMzQgMyAzMyAyIDY5IDIgMTA1SDI1bC0xLTI2NWg0OGMyIDEwIDAgMjMgMyAzMSAxMS0yNCAyOS0zNSA2MC0zNXpNMTE0LTMwYzMzIDAgMzktMzEgNDAtNjYgMC0zOC05LTY0LTQwLTY0LTU2IDAtNTUgMTMwIDAgMTMwIiBpZD0iYWMiLz48cGF0aCBmaWxsPSIjM2E0MTRhIiBkPSJNMTM3LTEzOGMxLTI5LTcwLTM0LTcxLTQgMTUgNDYgMTE4IDcgMTE5IDg2IDEgODMtMTY0IDc2LTE3MiA5bDQzLTdjNCAxOSAyMCAyNSA0NCAyNSAzMyA4IDU3LTMwIDI0LTQxQzgxLTg0IDIyLTgxIDIwLTEzNmMtMi04MCAxNTQtNzQgMTYxLTciIGlkPSJhZCIvPjxnIGlkPSJyIj48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzcsMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzcsMCwwKSIgeGxpbms6aHJlZj0iI1oiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzcsMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzcsMTcuMjgzOTUwNjE3MjgzOTQyLDApIiB4bGluazpocmVmPSIjYWEiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzcsMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzcsMzAuODAyNDY5MTM1ODAyNDU0LDApIiB4bGluazpocmVmPSIjYWIiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzcsMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzcsMzguMTQ4MTQ4MTQ4MTQ4MTMsMCkiIHhsaW5rOmhyZWY9IiNhYyIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzNywwLDAsMC4wNjE3MjgzOTUwNjE3MjgzNyw1MS42NjY2NjY2NjY2NjY2NCwwKSIgeGxpbms6aHJlZj0iI2FhIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM3LDAsMCwwLjA2MTcyODM5NTA2MTcyODM3LDY1LjE4NTE4NTE4NTE4NTE2LDApIiB4bGluazpocmVmPSIjYWIiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzcsMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzcsNzIuNTMwODY0MTk3NTMwODMsMCkiIHhsaW5rOmhyZWY9IiNhZCIvPjwvZz48cGF0aCBmaWxsPSIjM2E0MTRhIiBkPSJNMjM4LTk1YzAgNjktNDQgOTktMTExIDk5QzYzIDQgMjItMjUgMjItOTN2LTE1NWg1MXYxNTFjLTEgMzggMTkgNTkgNTUgNjAgOTAgMSA0OS0xMzAgNTgtMjExaDUydjE1MyIgaWQ9ImFlIi8+PHBhdGggZmlsbD0iIzNhNDE0YSIgZD0iTTE4NS00OGMtMTMgMzAtMzcgNTMtODIgNTJDNDMgMiAxNC0zMyAxNC05NnMzMC05OCA5MC05OGM2MiAwIDgzIDQ1IDg0IDEwOEg2NmMwIDMxIDggNTUgMzkgNTYgMTggMCAzMC03IDM0LTIyem0tNDUtNjljNS00Ni01Ny02My03MC0yMS0yIDYtNCAxMy00IDIxaDc0IiBpZD0iYWYiLz48cGF0aCBmaWxsPSIjM2E0MTRhIiBkPSJNMTM1LTE1MGMtMzktMTItNjAgMTMtNjAgNTdWMEgyNWwtMS0xOTBoNDdjMiAxMy0xIDI5IDMgNDAgNi0yOCAyNy01MyA2MS00MXY0MSIgaWQ9ImFnIi8+PGcgaWQ9InMiPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzNywwLDAsMC4wNjE3MjgzOTUwNjE3MjgzNywwLDApIiB4bGluazpocmVmPSIjYWUiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzcsMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzcsMTUuOTg3NjU0MzIwOTg3NjQ4LDApIiB4bGluazpocmVmPSIjYWQiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzcsMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzcsMjguMzMzMzMzMzMzMzMzMzIsMCkiIHhsaW5rOmhyZWY9IiNhZiIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzNywwLDAsMC4wNjE3MjgzOTUwNjE3MjgzNyw0MC42NzkwMTIzNDU2NzksMCkiIHhsaW5rOmhyZWY9IiNhZyIvPjwvZz48cGF0aCBmaWxsPSIjM2E0MTRhIiBkPSJNMjQgMHYtMjQ4aDUyVjBIMjQiIGlkPSJhaCIvPjxwYXRoIGZpbGw9IiMzYTQxNGEiIGQ9Ik0xMzUtMTk0Yzg3LTEgNTggMTEzIDYzIDE5NGgtNTBjLTctNTcgMjMtMTU3LTM0LTE1Ny01OSAwLTM0IDk3LTM5IDE1N0gyNWwtMS0xOTBoNDdjMiAxMi0xIDI4IDMgMzggMTItMjYgMjgtNDEgNjEtNDIiIGlkPSJhaSIvPjxnIGlkPSJ0Ij48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzcsMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzcsMCwwKSIgeGxpbms6aHJlZj0iI2FoIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM3LDAsMCwwLjA2MTcyODM5NTA2MTcyODM3LDYuMTcyODM5NTA2MTcyODM3LDApIiB4bGluazpocmVmPSIjYWkiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzcsMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzcsMTkuNjkxMzU4MDI0NjkxMzUsMCkiIHhsaW5rOmhyZWY9IiNhYyIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzNywwLDAsMC4wNjE3MjgzOTUwNjE3MjgzNywzMy4yMDk4NzY1NDMyMDk4NjYsMCkiIHhsaW5rOmhyZWY9IiNhYSIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzNywwLDAsMC4wNjE3MjgzOTUwNjE3MjgzNyw0Ni43MjgzOTUwNjE3MjgzOCwwKSIgeGxpbms6aHJlZj0iI2FiIi8+PC9nPjxwYXRoIGZpbGw9IiMzYTQxNGEiIGQ9Ik03Ni0yMDh2NzdoMTI3djQwSDc2VjBIMjR2LTI0OGgxODN2NDBINzYiIGlkPSJhaiIvPjxwYXRoIGZpbGw9IiMzYTQxNGEiIGQ9Ik0xOTAtNjNjLTcgNDItMzggNjctODYgNjctNTkgMC04NC0zOC05MC05OC0xMi0xMTAgMTU0LTEzNyAxNzQtMzZsLTQ5IDJjLTItMTktMTUtMzItMzUtMzItMzAgMC0zNSAyOC0zOCA2NC02IDc0IDY1IDg3IDc0IDMwIiBpZD0iYWsiLz48cGF0aCBmaWxsPSIjM2E0MTRhIiBkPSJNMjUtMjI0di0zN2g1MHYzN0gyNXpNMjUgMHYtMTkwaDUwVjBIMjUiIGlkPSJhbCIvPjxwYXRoIGZpbGw9IiMzYTQxNGEiIGQ9Ik0xMTAtMTk0YzY0IDAgOTYgMzYgOTYgOTkgMCA2NC0zNSA5OS05NyA5OS02MSAwLTk1LTM2LTk1LTk5IDAtNjIgMzQtOTkgOTYtOTl6bS0xIDE2NGMzNSAwIDQ1LTI4IDQ1LTY1IDAtNDAtMTAtNjUtNDMtNjUtMzQgMC00NSAyNi00NSA2NSAwIDM2IDEwIDY1IDQzIDY1IiBpZD0iYW0iLz48ZyBpZD0idSI+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM2NCwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzNjQsMCwwKSIgeGxpbms6aHJlZj0iI2FqIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM2NCwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzNjQsMTMuNTE4NTE4NTE4NTE4NTEyLDApIiB4bGluazpocmVmPSIjYWEiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzY0LDAsMCwwLjA2MTcyODM5NTA2MTcyODM2NCwyNy4wMzcwMzcwMzcwMzcwMjQsMCkiIHhsaW5rOmhyZWY9IiNhaSIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzNjQsMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzY0LDQwLjU1NTU1NTU1NTU1NTUzNiwwKSIgeGxpbms6aHJlZj0iI2FrIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM2NCwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzNjQsNTIuOTAxMjM0NTY3OTAxMjEsMCkiIHhsaW5rOmhyZWY9IiNhYiIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzNjQsMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzY0LDYwLjI0NjkxMzU4MDI0Njg5LDApIiB4bGluazpocmVmPSIjYWwiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzY0LDAsMCwwLjA2MTcyODM5NTA2MTcyODM2NCw2Ni40MTk3NTMwODY0MTk3MywwKSIgeGxpbms6aHJlZj0iI2FtIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM2NCwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzNjQsNzkuOTM4MjcxNjA0OTM4MjUsMCkiIHhsaW5rOmhyZWY9IiNhaSIvPjwvZz48cGF0aCBmaWxsPSIjM2E0MTRhIiBkPSJNMjQtMjQ4YzEyMC03IDIyMyA1IDIyMSAxMjJDMjQ0LTQ2IDIwMSAwIDEyNCAwSDI0di0yNDh6TTc2LTQwYzc0IDcgMTE3LTE4IDExNy04NiAwLTY3LTQ1LTg4LTExNy04MnYxNjgiIGlkPSJhbiIvPjxwYXRoIGZpbGw9IiMzYTQxNGEiIGQ9Ik0xMzMtMzRDMTE3LTE1IDEwMyA1IDY5IDQgMzIgMyAxMS0xNiAxMS01NGMtMS02MCA1NS02MyAxMTYtNjEgMS0yNi0zLTQ3LTI4LTQ3LTE4IDEtMjYgOS0yOCAyN2wtNTItMmM3LTM4IDM2LTU4IDgyLTU3czc0IDIyIDc1IDY4bDEgODJjLTEgMTQgMTIgMTggMjUgMTV2MjdjLTMwIDgtNzEgNS02OS0zMnptLTQ4IDNjMjkgMCA0My0yNCA0Mi01Ny0zMiAwLTY2LTMtNjUgMzAgMCAxNyA4IDI3IDIzIDI3IiBpZD0iYW8iLz48ZyBpZD0idiI+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM3LDAsMCwwLjA2MTcyODM5NTA2MTcyODM3LDAsMCkiIHhsaW5rOmhyZWY9IiNhbiIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzNywwLDAsMC4wNjE3MjgzOTUwNjE3MjgzNywxNS45ODc2NTQzMjA5ODc2NDgsMCkiIHhsaW5rOmhyZWY9IiNhbyIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzNywwLDAsMC4wNjE3MjgzOTUwNjE3MjgzNywyOC4zMzMzMzMzMzMzMzMzMiwwKSIgeGxpbms6aHJlZj0iI2FiIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM3LDAsMCwwLjA2MTcyODM5NTA2MTcyODM3LDM1LjY3OTAxMjM0NTY3OSwwKSIgeGxpbms6aHJlZj0iI2FvIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM3LDAsMCwwLjA2MTcyODM5NTA2MTcyODM3LDQ4LjAyNDY5MTM1ODAyNDY3LDApIiB4bGluazpocmVmPSIjYWQiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzcsMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzcsNjAuMzcwMzcwMzcwMzcwMzQsMCkiIHhsaW5rOmhyZWY9IiNhZiIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzNywwLDAsMC4wNjE3MjgzOTUwNjE3MjgzNyw3Mi43MTYwNDkzODI3MTYwMSwwKSIgeGxpbms6aHJlZj0iI2FiIi8+PC9nPjxwYXRoIGZpbGw9IiMzYTQxNGEiIGQ9Ik0yNCAwdi0yNDhoNTJ2MjA4aDEzM1YwSDI0IiBpZD0iYXAiLz48cGF0aCBmaWxsPSIjM2E0MTRhIiBkPSJNMTk1LTZDMjA2IDgyIDc1IDEwMCAzMSA0NmMtNC02LTYtMTMtOC0yMWw0OS02YzMgMTYgMTYgMjQgMzQgMjUgNDAgMCA0Mi0zNyA0MC03OS0xMSAyMi0zMCAzNS02MSAzNS01MyAwLTcwLTQzLTcwLTk3IDAtNTYgMTgtOTYgNzMtOTcgMzAgMCA0NiAxNCA1OSAzNGwyLTMwaDQ3em0tOTAtMjljMzIgMCA0MS0yNyA0MS02MyAwLTM1LTktNjItNDAtNjItMzIgMC0zOSAyOS00MCA2MyAwIDM2IDkgNjIgMzkgNjIiIGlkPSJhcSIvPjxwYXRoIGZpbGw9IiMzYTQxNGEiIGQ9Ik04OC0xOTRjMzEtMSA0NiAxNSA1OCAzNGwtMS0xMDFoNTBsMSAyNjFoLTQ4Yy0yLTEwIDAtMjMtMy0zMUMxMzQtOCAxMTYgNCA4NCA0IDMyIDQgMTYtNDEgMTUtOTVjMC01NiAxOS05NyA3My05OXptMTcgMTY0YzMzIDAgNDAtMzAgNDEtNjYgMS0zNy05LTY0LTQxLTY0cy0zOCAzMC0zOSA2NWMwIDQzIDEzIDY1IDM5IDY1IiBpZD0iYXIiLz48ZyBpZD0idyI+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA3NDA3NDA3NDA3NDA3NDA2LDAsMCwwLjA3NDA3NDA3NDA3NDA3NDA2LDAsMCkiIHhsaW5rOmhyZWY9IiNhcCIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNzQwNzQwNzQwNzQwNzQwNiwwLDAsMC4wNzQwNzQwNzQwNzQwNzQwNiwxNi4yMjIyMjIyMjIyMjIyMTgsMCkiIHhsaW5rOmhyZWY9IiNhZiIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNzQwNzQwNzQwNzQwNzQwNiwwLDAsMC4wNzQwNzQwNzQwNzQwNzQwNiwzMS4wMzcwMzcwMzcwMzcwMywwKSIgeGxpbms6aHJlZj0iI2FxIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA3NDA3NDA3NDA3NDA3NDA2LDAsMCwwLjA3NDA3NDA3NDA3NDA3NDA2LDQ3LjI1OTI1OTI1OTI1OTI2LDApIiB4bGluazpocmVmPSIjYWYiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDc0MDc0MDc0MDc0MDc0MDYsMCwwLDAuMDc0MDc0MDc0MDc0MDc0MDYsNjIuMDc0MDc0MDc0MDc0MDYsMCkiIHhsaW5rOmhyZWY9IiNhaSIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNzQwNzQwNzQwNzQwNzQwNiwwLDAsMC4wNzQwNzQwNzQwNzQwNzQwNiw3OC4yOTYyOTYyOTYyOTYyOCwwKSIgeGxpbms6aHJlZj0iI2FyIi8+PHBhdGggZmlsbD0iIzNhNDE0YSIgZD0iTS0xLjMzIDEuNDNoOTcuMnYyLjhoLTk3LjJ6Ii8+PC9nPjxnIGlkPSJ4Ij48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwKSIgeGxpbms6aHJlZj0iI0MiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMTguNDU2NzkwMTIzNDU2Nzg4LDApIiB4bGluazpocmVmPSIjTCIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSwzMC44MDI0NjkxMzU4MDI0NywwKSIgeGxpbms6aHJlZj0iI0ciLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDYxNzI4Mzk1MDYxNzI4MzksMCwwLDAuMDYxNzI4Mzk1MDYxNzI4MzksMzYuOTc1MzA4NjQxOTc1MzEsMCkiIHhsaW5rOmhyZWY9IiNYIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA2MTcyODM5NTA2MTcyODM5LDAsMCwwLjA2MTcyODM5NTA2MTcyODM5LDQ5LjMyMDk4NzY1NDMyMDk5LDApIiB4bGluazpocmVmPSIjSCIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wNjE3MjgzOTUwNjE3MjgzOSwwLDAsMC4wNjE3MjgzOTUwNjE3MjgzOSw2MS42NjY2NjY2NjY2NjY2NjQsMCkiIHhsaW5rOmhyZWY9IiNVIi8+PC9nPjxwYXRoIGZpbGw9IiMzYTQxNGEiIGQ9Ik0xNDAtMjUxYzgxIDAgMTIzIDQ2IDEyMyAxMjZDMjYzLTQ2IDIxOSA0IDE0MCA0IDU5IDQgMTctNDUgMTctMTI1czQyLTEyNiAxMjMtMTI2em0wIDIyN2M2MyAwIDg5LTQxIDg5LTEwMXMtMjktOTktODktOTljLTYxIDAtODkgMzktODkgOTlTNzktMjUgMTQwLTI0IiBpZD0iYXMiLz48cGF0aCBmaWxsPSIjM2E0MTRhIiBkPSJNMzAtMjQ4Yzg3IDEgMTkxLTE1IDE5MSA3NSAwIDc4LTc3IDgwLTE1OCA3NlYwSDMwdi0yNDh6bTMzIDEyNWM1NyAwIDEyNCAxMSAxMjQtNTAgMC01OS02OC00Ny0xMjQtNDh2OTgiIGlkPSJhdCIvPjxwYXRoIGZpbGw9IiMzYTQxNGEiIGQ9Ik0zMyAwdi0yNDhoMzRWMEgzMyIgaWQ9ImF1Ii8+PHBhdGggZmlsbD0iIzNhNDE0YSIgZD0iTTIxMi0xNzljLTEwLTI4LTM1LTQ1LTczLTQ1LTU5IDAtODcgNDAtODcgOTkgMCA2MCAyOSAxMDEgODkgMTAxIDQzIDAgNjItMjQgNzgtNTJsMjcgMTRDMjI4LTI0IDE5NSA0IDEzOSA0IDU5IDQgMjItNDYgMTgtMTI1Yy02LTEwNCA5OS0xNTMgMTg3LTExMSAxOSA5IDMxIDI2IDM5IDQ2IiBpZD0iYXYiLz48ZyBpZD0ieSI+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA5ODc2NTQzMjA5ODc2NTQsMCwwLDAuMDk4NzY1NDMyMDk4NzY1NCwwLDApIiB4bGluazpocmVmPSIjYXMiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDk4NzY1NDMyMDk4NzY1NCwwLDAsMC4wOTg3NjU0MzIwOTg3NjU0LDI3LjY1NDMyMDk4NzY1NDMxMiwwKSIgeGxpbms6aHJlZj0iI2F0Ii8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA5ODc2NTQzMjA5ODc2NTQsMCwwLDAuMDk4NzY1NDMyMDk4NzY1NCw1MS4zNTgwMjQ2OTEzNTgwMDQsMCkiIHhsaW5rOmhyZWY9IiNZIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA5ODc2NTQzMjA5ODc2NTQsMCwwLDAuMDk4NzY1NDMyMDk4NzY1NCw3Mi45ODc2NTQzMjA5ODc2MywwKSIgeGxpbms6aHJlZj0iI2F1Ii8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA5ODc2NTQzMjA5ODc2NTQsMCwwLDAuMDk4NzY1NDMyMDk4NzY1NCw4Mi44NjQxOTc1MzA4NjQxNywwKSIgeGxpbms6aHJlZj0iI2F2Ii8+PC9nPjxnIGlkPSJ6Ij48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDk4NzY1NDMyMDk4NzY1NCwwLDAsMC4wOTg3NjU0MzIwOTg3NjU0LDAsMCkiIHhsaW5rOmhyZWY9IiNNIi8+PHVzZSB0cmFuc2Zvcm09Im1hdHJpeCgwLjA5ODc2NTQzMjA5ODc2NTQsMCwwLDAuMDk4NzY1NDMyMDk4NzY1NCwxNy43Nzc3Nzc3Nzc3Nzc3NywwKSIgeGxpbms6aHJlZj0iI0ciLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDk4NzY1NDMyMDk4NzY1NCwwLDAsMC4wOTg3NjU0MzIwOTg3NjU0LDI3LjY1NDMyMDk4NzY1NDMwNSwwKSIgeGxpbms6aHJlZj0iI0wiLz48dXNlIHRyYW5zZm9ybT0ibWF0cml4KDAuMDk4NzY1NDMyMDk4NzY1NCwwLDAsMC4wOTg3NjU0MzIwOTg3NjU0LDQ3LjQwNzQwNzQwNzQwNzM5LDApIiB4bGluazpocmVmPSIjSiIvPjx1c2UgdHJhbnNmb3JtPSJtYXRyaXgoMC4wOTg3NjU0MzIwOTg3NjU0LDAsMCwwLjA5ODc2NTQzMjA5ODc2NTQsNjcuMTYwNDkzODI3MTYwNDcsMCkiIHhsaW5rOmhyZWY9IiNNIi8+PC9nPjwvZGVmcz48L2c+PC9zdmc+" style="width:90.0%" />
+</center>
+<p>The following sections describe OPTIC inputs and steps in detail.</p>
+<div id="user-inputs" class="section level2">
+<h2>User inputs</h2>
+<div id="data" class="section level3">
+<h3>Data</h3>
+<p>Analysts will need to shape their data to work properly with OPTIC.
+The package contains an example dataset which demonstrates the format
+required by the function <code>optic_simulation</code>.</p>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="7%" />
+<col width="15%" />
+<col width="24%" />
+<col width="14%" />
+<col width="10%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">state</th>
+<th align="right">year</th>
+<th align="right">population</th>
+<th align="right">unemploymentrate</th>
+<th align="right">opioid_rx</th>
+<th align="right">deaths</th>
+<th align="right">crude.rate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Alabama</td>
+<td align="right">1999</td>
+<td align="right">4430141</td>
+<td align="right">4.7</td>
+<td align="right">NA</td>
+<td align="right">169</td>
+<td align="right">3.8</td>
+</tr>
+<tr class="even">
+<td align="left">Alabama</td>
+<td align="right">2000</td>
+<td align="right">4447100</td>
+<td align="right">4.6</td>
+<td align="right">NA</td>
+<td align="right">197</td>
+<td align="right">4.4</td>
+</tr>
+<tr class="odd">
+<td align="left">Alabama</td>
+<td align="right">2001</td>
+<td align="right">4467634</td>
+<td align="right">5.1</td>
+<td align="right">NA</td>
+<td align="right">216</td>
+<td align="right">4.8</td>
+</tr>
+<tr class="even">
+<td align="left">Alaska</td>
+<td align="right">1999</td>
+<td align="right">624779</td>
+<td align="right">6.5</td>
+<td align="right">NA</td>
+<td align="right">46</td>
+<td align="right">7.4</td>
+</tr>
+<tr class="odd">
+<td align="left">Alaska</td>
+<td align="right">2000</td>
+<td align="right">626932</td>
+<td align="right">6.4</td>
+<td align="right">NA</td>
+<td align="right">48</td>
+<td align="right">7.7</td>
+</tr>
+<tr class="even">
+<td align="left">Alaska</td>
+<td align="right">2001</td>
+<td align="right">633714</td>
+<td align="right">6.4</td>
+<td align="right">NA</td>
+<td align="right">62</td>
+<td align="right">9.8</td>
+</tr>
+</tbody>
+</table>
+<p>The data should generally be structured to work as an input to a
+two-way fixed effect model, using a “long-format”, with variables for
+“group”, “time”, covariates, and an outcome variable. The example data
+included in the package is derived from data provided by the US Bureau
+of Labor Statistics and the Centers for Disease Control and
+Prevention.</p>
+</div>
+<div id="policy-evaluation-scenarios" class="section level3">
+<h3>Policy evaluation scenarios</h3>
+<p>Policy evaluation scenarios are single string inputs into the
+<code>optic_simulation</code> function, representing either the no
+confounding scenario (“noconf”) or co-occurring policies scenario
+(“concurrent”). For the “concurrent” scenario, there are additional
+parameters required by <code>optic_simulation</code>, which are
+discussed in the “parameter” section below. Additional details on policy
+evaluation scenarios are provided in Griffin et al., 2021<span class="citation">(Griffin et al. 2021)</span> and Griffin et al.,
+2022<span class="citation">(Griffin et al. 2022)</span>.</p>
+</div>
+<div id="treatment-scenarios" class="section level3">
+<h3>Treatment scenarios</h3>
+<p>This input represents the “true treatment effects” that OPTIC will
+simulate across each iteration of the simulations. OPTIC is currently
+designed to work by generating static treatment effects (rather than
+dynamic treatment effects, such as time-varying treatment effects).
+Users should structure their treatment scenarios in a list,
+corresponding to the different types of treatment effects they would
+like to see examined. If the user is simulating models for the
+‘concurrent’ policy evaluation scenario, the list will contain two
+effects within a vector for each potential treatment scenario that the
+user wants to examine. Using the example_data:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(overdoses)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate 5% and 10% changes in mean opioid_death_rate, across states and years. </span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>five_percent_effect <span class="ot">&lt;-</span> <span class="fl">0.05</span><span class="sc">*</span><span class="fu">mean</span>(overdoses<span class="sc">$</span>crude.rate, <span class="at">na.rm =</span> T)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>ten_percent_effect  <span class="ot">&lt;-</span> <span class="fl">0.10</span><span class="sc">*</span><span class="fu">mean</span>(overdoses<span class="sc">$</span>crude.rate, <span class="at">na.rm =</span> T)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate a co-occuring policy effect</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>cooccur_effect <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.02</span><span class="sc">*</span><span class="fu">mean</span>(overdoses<span class="sc">$</span>crude.rate, <span class="at">na.rm =</span> T)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Scenario object for &quot;no confounding&quot; evaluation scenario:</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>scenarios_no_confounding <span class="ot">&lt;-</span> <span class="fu">list</span>(five_percent_effect, ten_percent_effect)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Scenario object for &quot;co-occuring policy&quot; evaluation scenario:</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>scenarios_co_occur <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">c</span>(five_percent_effect, cooccur_effect),</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">c</span>(ten_percent_effect, cooccur_effect))</span></code></pre></div>
+</div>
+</div>
+<div id="optic-functions" class="section level2">
+<h2>OPTIC functions</h2>
+<div id="optic_model-and-optic_simulation" class="section level3">
+<h3><code>optic_model</code> and <code>optic_simulation</code></h3>
+<p>For each treatment scenario, OPTIC will simulate the specified
+treatment effect onto the users repeated measures data and then attempt
+to estimate this effect based on user-provided models. The
+<code>optic_simulation</code> function takes a list of
+<code>optic_model</code>. Model lists should contain
+<code>optic_model</code> with the following arguments :</p>
+<ul>
+<li><p><code>name</code>: A name for the model to identify the model
+type in results.</p></li>
+<li><p><code>type</code>: Users can set this as either “autoreg”,
+“drdid”, “multisynth”, or “reg”.</p>
+<ul>
+<li><p>“reg” uses a typical regression framework, implementing the
+procedure chosen in <code>model_call</code>.</p></li>
+<li><p>“autoreg” adds a dependent lag to the model formula.</p></li>
+<li><p>“drdid” estimates a treatment effect using a doubly-robust
+difference-in-difference estimator, with covariates in the
+<code>model_formula</code> argument used within both the propensity
+score stage and outcome modeling stage (for more details on doubly
+robust difference-in-differences, see Sant’Anna \&amp; Zhao,
+2020)</p></li>
+<li><p>“multisynth” estimates a treatment effect using augmented
+synthetic controls (for additional details on augmented synthetic
+controls, see Ben-Michael, Feller, \&amp; Rothstein, 2021).</p></li>
+</ul></li>
+<li><p><code>call</code>: The call for the model in R (e.g. “lm”, “glm”,
+etc).</p></li>
+<li><p><code>formula</code>: The model specification, in an R formula.
+Needs to include a variable labeled “treament_level” for treatment
+status or labeled “treatment_change” for coding a change in treatment
+status (when using autoregressive models). For “concurrent” scenarios,
+treatment variables should labeled “treatment1” and “treatment2” for
+each policy included.</p></li>
+<li><p><code>args</code>: Any additional arguments passed to the
+model_call (e.g. “weights”, “family”, “control” etc.).</p></li>
+<li><p><code>se_adjust</code>: Any adjustments to standard errors after
+estimation. OPTIC recognizes either “none” for no adjustment or
+“cluster” for clustered standard errors (OPTIC will use the
+<code>optic_simulation</code> parameter “unit_var” to determine clusters
+for clustered standard errors).</p></li>
+</ul>
+<p>Below provides an example of a model list using the
+<code>example_data</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify 3 models to simulate treatment effects: Linear fixed effect model,</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># with and without covariate adjusters, and a linear model using ar-terms</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># and no fixed-effects</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>lm_fe_unadj <span class="ot">&lt;-</span> <span class="fu">optic_model</span>(</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;fixed_effect_linear&quot;</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">&quot;reg&quot;</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">call =</span> <span class="st">&quot;lm&quot;</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">formula =</span> crude.rate <span class="sc">~</span> <span class="fu">as.factor</span>(year) <span class="sc">+</span> <span class="fu">as.factor</span>(state) <span class="sc">+</span> treatment_level,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">se_adjust =</span> <span class="st">&quot;cluster-unit&quot;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>lm_fe_adj <span class="ot">&lt;-</span> <span class="fu">optic_model</span>(</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;fixed_effect_linear_adj&quot;</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">&quot;reg&quot;</span>,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">call =</span> <span class="st">&quot;lm&quot;</span>,</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">formula =</span> crude.rate <span class="sc">~</span> unemploymentrate <span class="sc">+</span> <span class="fu">as.factor</span>(year) <span class="sc">+</span> <span class="fu">as.factor</span>(state) <span class="sc">+</span> treatment_level,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">se_adjust =</span> <span class="st">&quot;cluster-unit&quot;</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>lm_ar <span class="ot">&lt;-</span> <span class="fu">optic_model</span>(</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;auto_regressive_linear&quot;</span>,</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">&quot;autoreg&quot;</span>,</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">call =</span> <span class="st">&quot;lm&quot;</span>,</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">formula =</span> crude.rate <span class="sc">~</span> unemploymentrate <span class="sc">+</span> <span class="fu">as.factor</span>(year) <span class="sc">+</span> treatment_change,</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">se_adjust =</span> <span class="st">&quot;none&quot;</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>sim_models <span class="ot">&lt;-</span> <span class="fu">list</span>(lm_fe_unadj, lm_fe_adj, lm_ar)</span></code></pre></div>
+</div>
+<div id="optic_simulation" class="section level3">
+<h3><code>optic_simulation</code></h3>
+<p>This function takes the policy evaluation scenario, treatment
+scenarios, model list, and function parameters to generate synthetic
+datasets with simulated treatment effects. <code>optic_simulation</code>
+has the following arguments:</p>
+<ul>
+<li><p><code>x</code>: The prepped analysis dataset. See section above
+for more details.</p></li>
+<li><p><code>models</code>: List of models. See section above for more
+details.</p></li>
+<li><p><code>method</code>: Policy evaluation scenario. Can either be
+“noconf” or “concurrent”.</p></li>
+<li><p><code>unit_var</code>: Variable for groups within the dataset.
+Used to determine clusters for clustered standard errors</p></li>
+<li><p><code>time_var</code>: The variable used for time units. Variable
+should correspond to years. To use alternative time units, express them
+as fractional years (e.g. July = 7/12).</p></li>
+<li><p><code>effect_magnitude</code>: A vector of treatment scenarios.
+See section above for more details. Synthetic datasets will be generated
+for each entry in the vector.</p></li>
+<li><p><code>n_units</code>: A vector with the number of units that
+should be in the treatment group. Synthetic datasets will be generated
+for each entry in the vector.</p></li>
+<li><p><code>effect_direction</code>: A vector containing either ‘neg’,
+‘null’, or ‘pos’. Synthetic datasets will be generated for each entry in
+the vector. Determines the direction of the simulated effect.</p></li>
+<li><p><code>policy_speed</code>: A vector containing either ‘instant’
+or ‘slow’ entries, determining how quickly treated units obtain the
+simulated effect. Synthetic datasets will be generated for each entry in
+the vector. Can either be ‘instant” (so treatment effect applies fully
+in the first treated time period) or ’slow’ (treatment effect ramps up
+linearly to the desired effect size, based on
+<code>n_implementation_periods</code>.</p></li>
+<li><p><code>n_implementation_periods</code> A numeric vector with
+number of periods after implementation until treated units reach the
+desired simulated treatment effect. Synthetic datasets will be generated
+for each entry in the vector.</p></li>
+</ul>
+<p>Three additional arguments to <code>optic_simulation</code> only
+apply within the “concurrent” policy scenario:</p>
+<ul>
+<li><p><code>rhos</code>: A vector of 0-1 values indicating the
+correlation between the primary policy and a cooccuring policy.
+Synthetic datasets will be generated for each entry in the
+vector.</p></li>
+<li><p><code>years_apart</code>: Number of years between the primary
+policy being implemented and the cooccuring policy.</p></li>
+<li><p><code>ordered</code>: Determines if the primary policy always
+occurs before the confounding policy (<code>TRUE</code>) or if the
+policies are randomly ordered (<code>FALSE</code>).</p></li>
+</ul>
+<p>and four other arguments apply only to the “confounding” policy
+scenario:</p>
+<ul>
+<li><p><code>conf_var</code>: A string variable, defining a (unobserved)
+confounding variable in the dataset that will be used to simulate the
+effect of confounding in the outcome variable.</p></li>
+<li><p><code>prior_control</code>: A string variable that is either
+“level” or “trend”. Specifies confounding for <span class="math inline">\(C_ij\)</span> term, which is confounding due to
+either prior outcome levels or prior outcome trends. For trends, OPTIC
+simulates confounding as an average of outcome levels in the previous
+three years.</p></li>
+<li><p><code>bias_type</code>: String determining type of confounding
+effect, either ‘linear’ or ‘nonlinear’. If linear is chosen, then
+confounding in the outcome is simulated as additive (unobserved confound
+variable + prior outcome trend/level). If non-linear, then confounding
+is simulated as additive, along with squared confounding terms and an
+interaction term between the two confounders (unobserved variable and
+prior outcome level/trends).</p></li>
+<li><p><code>bias_size</code>: A string that is either ‘small’,
+‘medium’, or ‘large’. Used to determine the level of confounding (see
+paper for more details; this parameter sets values for <span class="math inline">\(a_i\)</span> and <span class="math inline">\(b_i\)</span> terms). The terms are determined such
+that the standardized mean difference between simulated outcomes between
+treated units in policy-enacted years and simulated outcomes for
+non-treated units/treated units in non-policy enacted years is 0.15,
+0.30, and 0.45 (for ‘small’, ‘medium’, and ‘large’,
+respectively).</p></li>
+</ul>
+<p>The function returns a configuration object that’s used as an input
+to <code>dispatch_simulations</code>. This object contains a dataset
+listing all possible simulations that will be run for each model. An
+example call of <code>optic_simulation</code> is displayed below:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>sim_config <span class="ot">&lt;-</span> <span class="fu">optic_simulation</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x                        =</span> overdoses,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">models                   =</span> sim_models,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">iters                    =</span> <span class="dv">100</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">method                   =</span> <span class="st">&quot;no_confounding&quot;</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">unit_var                 =</span> <span class="st">&quot;state&quot;</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">treat_var                =</span> <span class="st">&quot;state&quot;</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">time_var                 =</span> <span class="st">&quot;year&quot;</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">effect_magnitude         =</span> scenarios_no_confounding,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_units                  =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">50</span>),</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">effect_direction         =</span> <span class="fu">c</span>(<span class="st">&quot;neg&quot;</span>),</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">policy_speed             =</span> <span class="fu">c</span>(<span class="st">&quot;instant&quot;</span>),</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_implementation_periods =</span> <span class="fu">c</span>(<span class="dv">1</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number of Simulations: 6</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number of Models: 3</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Iteration per Simulation : 100</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Total number of Iterations to Run: 1800</span></span></code></pre></div>
+<p>In addition to the parameters discussed above, OPTIC also permits an
+advanced user to override the internal functions of each model (such as
+the sampling method for assigning treatment), by passing a custom
+function to <code>optic_simulation</code>. We suggest referring to the
+underlying functions within the scripts
+<code>no-confounding-methods.R</code>,
+<code>concurrent-methods.R</code>, and
+<code>selection-bias-methods.R</code>, if further modifications are
+desired.</p>
+</div>
+<div id="dispatch_simulations" class="section level3">
+<h3><code>dispatch_simulations</code></h3>
+<p>With the configuration object built, we can now simulate models with
+the configuration scenarios using the <code>simulate</code> function.
+This function accepts arguments to parallelize code through the use of
+the “future” package. If this setting is turned on, the function will
+try to parallelize simulation iterations on the analyst’s machine. Any
+additional packages required by the user for model calls (e.g. a
+specific modeling package) must also be passed to dispatch_simulations
+using future.globals and future.packages arguments.</p>
+<p>Note this next step will only take a few minutes to run; with large
+numbers of permutations or iterations, it can require several hours for
+this function to finish. We suggest using the parallelization options
+(<code>use_future = T</code>), which can help a great deal for large
+analyses on your data of interest. We recommend using anywhere between
+300-1000 iterations when analyzing your final sets of output.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">dispatch_simulations</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  sim_config,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">use_future =</span> T,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">9782</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">verbose =</span> <span class="dv">2</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">future.globals=</span><span class="fu">c</span>(<span class="st">&quot;cluster_adjust_se&quot;</span>),</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">future.packages=</span><span class="fu">c</span>(<span class="st">&quot;MASS&quot;</span>, <span class="st">&quot;dplyr&quot;</span>, <span class="st">&quot;optic&quot;</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; JOB 1 OF 6 DISPATCHED:</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         DISPATCH METHOD: parallel (future)</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         PARAMS:</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             unit_var: state</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             time_var: year</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             effect_magnitude: 0.632536458333333</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             n_units: 30</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             effect_direction: neg</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             policy_speed: instant</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             n_implementation_periods: 1</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             prior_control: level</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             treat_var: state</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Attaching package: &#39;dplyr&#39;</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The following object is masked from &#39;package:MASS&#39;:</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     select</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The following objects are masked from &#39;package:stats&#39;:</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     filter, lag</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The following objects are masked from &#39;package:base&#39;:</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; JOB 2 OF 6 DISPATCHED:</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         DISPATCH METHOD: parallel (future)</span></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         PARAMS:</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             unit_var: state</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             time_var: year</span></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             effect_magnitude: 1.26507291666667</span></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             n_units: 30</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             effect_direction: neg</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             policy_speed: instant</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             n_implementation_periods: 1</span></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             prior_control: level</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             treat_var: state</span></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; JOB 3 OF 6 DISPATCHED:</span></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         DISPATCH METHOD: parallel (future)</span></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         PARAMS:</span></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             unit_var: state</span></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             time_var: year</span></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             effect_magnitude: 0.632536458333333</span></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             n_units: 40</span></span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             effect_direction: neg</span></span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             policy_speed: instant</span></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             n_implementation_periods: 1</span></span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             prior_control: level</span></span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             treat_var: state</span></span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; JOB 4 OF 6 DISPATCHED:</span></span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         DISPATCH METHOD: parallel (future)</span></span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         PARAMS:</span></span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             unit_var: state</span></span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             time_var: year</span></span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             effect_magnitude: 1.26507291666667</span></span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             n_units: 40</span></span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             effect_direction: neg</span></span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             policy_speed: instant</span></span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             n_implementation_periods: 1</span></span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             prior_control: level</span></span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             treat_var: state</span></span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; JOB 5 OF 6 DISPATCHED:</span></span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         DISPATCH METHOD: parallel (future)</span></span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         PARAMS:</span></span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             unit_var: state</span></span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             time_var: year</span></span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             effect_magnitude: 0.632536458333333</span></span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             n_units: 50</span></span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             effect_direction: neg</span></span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             policy_speed: instant</span></span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             n_implementation_periods: 1</span></span>
+<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             prior_control: level</span></span>
+<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             treat_var: state</span></span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; JOB 6 OF 6 DISPATCHED:</span></span>
+<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         DISPATCH METHOD: parallel (future)</span></span>
+<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         PARAMS:</span></span>
+<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             unit_var: state</span></span>
+<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             time_var: year</span></span>
+<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             effect_magnitude: 1.26507291666667</span></span>
+<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             n_units: 50</span></span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             effect_direction: neg</span></span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             policy_speed: instant</span></span>
+<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             n_implementation_periods: 1</span></span>
+<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             prior_control: level</span></span>
+<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             treat_var: state</span></span></code></pre></div>
+<p>OPTIC will provide a short summary on the models being run if verbose
+is set to 1 or 2. We now have results which can be used to construct
+summary statistics and compare models for policy evaluation. Each
+scenario will be saved as a list entry in the results object, with each
+list entry containing a dataframe with rows for model results. Model
+results return model point estimates &amp; standard errors for each
+treatment variable (in the ‘noconf’ method, this variable would be
+‘treatment’ and for the ’concurrent” method, this variable would be
+treatment1 &amp; treatment2), along with policy scenario settings.</p>
+<p>The results table includes the simulation run parameters, along with
+estimates of the simulated treatment effect. The table below displays a
+few select estimates from the large results table:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(results[[<span class="dv">1</span>]][<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>), <span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>], <span class="at">format =</span> <span class="st">&quot;markdown&quot;</span>)</span></code></pre></div>
+<table>
+<colgroup>
+<col width="2%" />
+<col width="9%" />
+<col width="12%" />
+<col width="9%" />
+<col width="8%" />
+<col width="8%" />
+<col width="9%" />
+<col width="8%" />
+<col width="7%" />
+<col width="21%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">outcome</th>
+<th align="left">se_adjustment</th>
+<th align="right">estimate</th>
+<th align="right">se</th>
+<th align="right">variance</th>
+<th align="right">t_stat</th>
+<th align="right">p_value</th>
+<th align="right">mse</th>
+<th align="left">model_name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">crude.rate</td>
+<td align="left">cluster-unit</td>
+<td align="right">-0.8347378</td>
+<td align="right">0.7812159</td>
+<td align="right">0.6102983</td>
+<td align="right">-1.0685109</td>
+<td align="right">0.2855798</td>
+<td align="right">10.19993</td>
+<td align="left">fixed_effect_linear</td>
+</tr>
+<tr class="even">
+<td align="left">4</td>
+<td align="left">crude.rate</td>
+<td align="left">cluster-unit</td>
+<td align="right">-0.7610651</td>
+<td align="right">0.7671034</td>
+<td align="right">0.5884476</td>
+<td align="right">-0.9921284</td>
+<td align="right">0.3214048</td>
+<td align="right">10.16414</td>
+<td align="left">fixed_effect_linear_adj</td>
+</tr>
+<tr class="odd">
+<td align="left">6</td>
+<td align="left">crude.rate</td>
+<td align="left">none</td>
+<td align="right">-0.8240759</td>
+<td align="right">0.4038133</td>
+<td align="right">0.1630652</td>
+<td align="right">-2.0407349</td>
+<td align="right">0.0415718</td>
+<td align="right">10.20003</td>
+<td align="left">fixed_effect_linear</td>
+</tr>
+</tbody>
+</table>
+<p>There is also detailed information on Type I error rates when the
+estimated treatment effect is null, Type S error rates, and
+coverage.</p>
+<p>We can use the results table to analyze the relative performance of
+models across data scenarios or create test statistics as needed for an
+analysis. For example, we might be interested in comparingrelative bias
+across the point estimates, in the scenario where the effect of policy
+implementation is immediate and decreases the crude.rate by 5%:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare point estimates across models for the 5% change scenario, with instantaneous policy adoption:</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>df_compare <span class="ot">&lt;-</span> results[[<span class="dv">1</span>]][(results[[<span class="dv">1</span>]]<span class="sc">$</span>se_adjustment <span class="sc">==</span> <span class="st">&quot;cluster-unit&quot;</span>)<span class="sc">|</span>(results[[<span class="dv">1</span>]]<span class="sc">$</span>model_name <span class="sc">==</span> <span class="st">&quot;auto_regressive_linear&quot;</span>),]</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>true_est <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">round</span>(five_percent_effect, <span class="dv">3</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>grab_mean_and_se <span class="ot">&lt;-</span> <span class="cf">function</span>(model_name){</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  sim_mean <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">mean</span>(df_compare[df_compare<span class="sc">$</span>model_name <span class="sc">==</span> model_name,]<span class="sc">$</span>estimate), <span class="dv">3</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  sim_se   <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">sd</span>(df_compare[df_compare<span class="sc">$</span>model_name <span class="sc">==</span> model_name,]<span class="sc">$</span>estimate), <span class="dv">3</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">paste0</span>(sim_mean, <span class="st">&quot; (&quot;</span>, sim_se, <span class="st">&quot;)&quot;</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;True effect size: &quot;</span>, true_est))</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;True effect size: -0.633&quot;</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;FE LM effect: &quot;</span>, <span class="fu">grab_mean_and_se</span>(<span class="st">&#39;fixed_effect_linear&#39;</span>)))</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;FE LM effect: -0.683 (0.976)&quot;</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;FE LM adjusted effect: &quot;</span>, <span class="fu">grab_mean_and_se</span>(<span class="st">&#39;fixed_effect_linear_adj&#39;</span>)))</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;FE LM adjusted effect: -0.685 (0.975)&quot;</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;AR LM effect: &quot;</span>, <span class="fu">grab_mean_and_se</span>(<span class="st">&#39;auto_regressive_linear&#39;</span>)))</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;AR LM effect: -0.64 (0.428)&quot;</span></span></code></pre></div>
+<p>From the above output, we can see all models are producing similar
+estimates, across simulated point estimate draws. While all of these
+models are biased slightly downwards compared to the true effect, the
+autoregressive linear model seems to outperform both the unadjusted and
+adjusted fixed effect model, producing an estimate closer to truth, with
+improved precision. Based on this simulation, if these were the only
+models under consideration, these results could justify using an
+autoregressive linear model for analyzing the real policy effect.</p>
+</div>
+<div id="acknowledgements" class="section level3">
+<h3>Acknowledgements</h3>
+<p>This package was financially supported through a National Institutes
+of Health (NIH) grant (P50DA046351) to RAND (PI: Stein).</p>
+</div>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2 class="unnumbered">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-http://zotero.org/users/3390799/items/V3Q6ARUA" class="csl-entry">
+Griffin, Beth Ann, Megan S. Schuler, Joseph Pane, Stephen W. Patrick,
+Rosanna Smart, Bradley D. Stein, Geoffrey Grimm, and Elizabeth A.
+Stuart. 2022. <span>“Methodological Considerations for Estimating Policy
+Effects in the Context of Co-Occurring Policies.”</span> <em>Health
+Services and Outcomes Research Methodology</em>, July. <a href="https://doi.org/10.1007/s10742-022-00284-w">https://doi.org/10.1007/s10742-022-00284-w</a>.
+</div>
+<div id="ref-http://zotero.org/users/3390799/items/ZNCVTPJF" class="csl-entry">
+Griffin, Beth Ann, Megan S. Schuler, Elizabeth A. Stuart, Stephen
+Patrick, Elizabeth McNeer, Rosanna Smart, David Powell, Bradley D.
+Stein, Terry L. Schell, and Rosalie Liccardo Pacula. 2021. <span>“Moving
+Beyond the Classic Difference-in-Differences Model: A Simulation Study
+Comparing Statistical Methods for Estimating Effectiveness of
+State-Level Policies.”</span> <em>BMC Medical Research Methodology</em>
+21 (1): 279. <a href="https://doi.org/10.1186/s12874-021-01471-y">https://doi.org/10.1186/s12874-021-01471-y</a>.
+</div>
+</div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
