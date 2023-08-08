@@ -1,7 +1,7 @@
 Type: Package
 Package: optic
 Title: Simulation Tool for Causal Inference Using Longitudinal Data
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(
     person("Beth Ann", "Griffin", , "bethg@rand.org", role = c("aut", "cph"),
            comment = c(ORCID = "0000-0002-2391-4601")),
@@ -32,7 +32,7 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
 NeedsCompilation: no
-Packaged: 2023-05-25 12:00:11 UTC; plima
+Packaged: 2023-08-08 13:06:43 UTC; plima
 Author: Beth Ann Griffin [aut, cph] (<https://orcid.org/0000-0002-2391-4601>),
   Pedro Nascimento de Lima [cre, aut]
     (<https://orcid.org/0000-0001-9057-198X>),
@@ -42,4 +42,4 @@ Author: Beth Ann Griffin [aut, cph] (<https://orcid.org/0000-0002-2391-4601>),
   Geoffrey Grimm [aut]
 Maintainer: Pedro Nascimento de Lima <plima@rand.org>
 Repository: CRAN
-Date/Publication: 2023-05-26 07:50:02 UTC
+Date/Publication: 2023-08-08 13:40:02 UTC

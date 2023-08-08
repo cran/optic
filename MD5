@@ -1,6 +1,6 @@
-455e1803e9e12558e6a48d8fa5c577d0 *DESCRIPTION
+05cd3c10227fe1257831e138494ffa6a *DESCRIPTION
 e5a77247e10003c53b5408e6365e620d *NAMESPACE
-6f038dbd8881bc5c5ccb65833fde479b *NEWS.md
+78fab3117a3c972494de71edd6d86286 *NEWS.md
 64b527c4d63e2594fc432b8c72627072 *R/add_prior_controls.R
 2a5f0b83b771c7fe29e39688915f49f7 *R/apply-treatment-effect.R
 42b610d5b93165254cc0b9236fa4d46b *R/calc-constant.r
@@ -23,12 +23,12 @@ a79ec5d521c19661aa7621ba7a5bde25 *R/optic-simulation-helper.R
 bb1b99363514a7d5822393eec4a0a1a0 *R/round2.r
 cf223bfc2347f6134a3068491db77eee *R/run-iteration.r
 522b549625ed089fcec022213f9b1e20 *R/selection-bias-methods.R
-6777e8c19d56a433822fe45c6f644cae *README.md
+81a89d0126073dcbb70627ff4a7a99c0 *README.md
 7515835a36ca250b1632252e9e118631 *build/vignette.rds
 b60b75e5184c129d7d2d41fddb636dea *data/overdoses.rda
-1be2bbe2051a2d76047c5093c3f50523 *inst/doc/intro_optic.R
-1224cceef0112247b7ddeee1425d6678 *inst/doc/intro_optic.Rmd
-fe9c34d82b2d51e38147a4c2b62f075f *inst/doc/intro_optic.html
+8c46c255e834fc8307e9187073faf1f5 *inst/doc/intro_optic.R
+8eba575f4e5f3d2b6837efb2c8914d7b *inst/doc/intro_optic.Rmd
+e29ec3ce4890fdcf118eef05a636743a *inst/doc/intro_optic.html
 ae4010d17641e1cb16921da0baf76322 *inst/figures/optic.png
 bac63d071174f9396e37f57f3c7aa054 *man/calculate_exposure.Rd
 f53975e2d75aada2aa69ca21eeb264da *man/dispatch_simulations.Rd
@@ -42,7 +42,7 @@ bedaec2feb3409d0982a9819a8f24a58 *man/overdoses.Rd
 0a69130b5d9cc4e72e1cfb7581150648 *tests/testthat/test-concurrent.R
 79506cb6ce8881b5cc1163537dc396bf *tests/testthat/test-confounding.R
 0603b647bf1a6aee1cc0b99833432a3d *tests/testthat/test-no_confounding.R
-1224cceef0112247b7ddeee1425d6678 *vignettes/intro_optic.Rmd
+8eba575f4e5f3d2b6837efb2c8914d7b *vignettes/intro_optic.Rmd
 a757369d413386aa36ba632d749c9650 *vignettes/optic_flowchart.pdf
 286dc2db7a5ce5c03807a29db670aff7 *vignettes/optic_flowchart.svg
-8e9c402897278b8f5d6e34c6ba2d694d *vignettes/optic_refs.json
+8aee5ae8bd6dab7e1204ed5dc2a4e4c9 *vignettes/optic_refs.json

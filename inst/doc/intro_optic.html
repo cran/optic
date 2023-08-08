@@ -388,10 +388,10 @@ which co-occurs with the policy of-interest.</li>
 associated with both policy adoption and outcome <em>trends</em>.</li>
 </ol>
 <p>Additional details on the simulation procedures within the OPTIC
-package are available in Griffin et al., 2021 <span class="citation">(Griffin et al. 2021)</span> and Griffin et al., 2022
-<span class="citation">(Griffin et al. 2022)</span>. Forthcoming updates
-to OPTIC will provides simulations which test the effect of confounding
-bias on model performance.</p>
+package are available in <span class="citation">Griffin et al.
+(2021)</span> and <span class="citation">Griffin et al. (2023)</span>.
+Forthcoming updates to OPTIC will provides simulations which test the
+effect of confounding bias on model performance.</p>
 <p>This README covers the use of OPTIC in R and provides examples of the
 package’s features. Section one covers package installation, section two
 provides a general overview of the package’s usage, and section three
@@ -516,8 +516,9 @@ confounding scenario (“noconf”) or co-occurring policies scenario
 (“concurrent”). For the “concurrent” scenario, there are additional
 parameters required by <code>optic_simulation</code>, which are
 discussed in the “parameter” section below. Additional details on policy
-evaluation scenarios are provided in Griffin et al., 2021<span class="citation">(Griffin et al. 2021)</span> and Griffin et al.,
-2022<span class="citation">(Griffin et al. 2022)</span>.</p>
+evaluation scenarios are provided in <span class="citation">Griffin et
+al. (2021)</span> and <span class="citation">Griffin et al.
+(2023)</span>.</p>
 </div>
 <div id="treatment-scenarios" class="section level3">
 <h3>Treatment scenarios</h3>
@@ -715,7 +716,7 @@ example call of <code>optic_simulation</code> is displayed below:</p>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x                        =</span> overdoses,</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">models                   =</span> sim_models,</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">iters                    =</span> <span class="dv">100</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">iters                    =</span> <span class="dv">10</span>, </span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">method                   =</span> <span class="st">&quot;no_confounding&quot;</span>,</span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">unit_var                 =</span> <span class="st">&quot;state&quot;</span>,</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">treat_var                =</span> <span class="st">&quot;state&quot;</span>,</span>
@@ -729,8 +730,8 @@ example call of <code>optic_simulation</code> is displayed below:</p>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number of Simulations: 6</span></span>
 <span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number of Models: 3</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Iteration per Simulation : 100</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Total number of Iterations to Run: 1800</span></span></code></pre></div>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Iteration per Simulation : 10</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Total number of Iterations to Run: 180</span></span></code></pre></div>
 <p>In addition to the parameters discussed above, OPTIC also permits an
 advanced user to override the internal functions of each model (such as
 the sampling method for assigning treatment), by passing a custom
@@ -751,12 +752,14 @@ try to parallelize simulation iterations on the analyst’s machine. Any
 additional packages required by the user for model calls (e.g. a
 specific modeling package) must also be passed to dispatch_simulations
 using future.globals and future.packages arguments.</p>
-<p>Note this next step will only take a few minutes to run; with large
+<p>Note this next step will only take a few seconds to run since we used
+a very small number of iterations for demonstration purpuses; with large
 numbers of permutations or iterations, it can require several hours for
-this function to finish. We suggest using the parallelization options
+this function to finish. We suggest using the parallel execution option
 (<code>use_future = T</code>), which can help a great deal for large
-analyses on your data of interest. We recommend using anywhere between
-300-1000 iterations when analyzing your final sets of output.</p>
+analyses on your data. We recommend using anywhere between 300-1000
+iterations (e.g., <code>iters = 1000</code>) when running your
+experiments.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">dispatch_simulations</span>(</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  </span>
@@ -958,11 +961,11 @@ implementation is immediate and decreases the crude.rate by 5%:</p>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;True effect size: &quot;</span>, true_est))</span>
 <span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;True effect size: -0.633&quot;</span></span>
 <span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;FE LM effect: &quot;</span>, <span class="fu">grab_mean_and_se</span>(<span class="st">&#39;fixed_effect_linear&#39;</span>)))</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;FE LM effect: -0.683 (0.976)&quot;</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;FE LM effect: -0.858 (0.725)&quot;</span></span>
 <span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;FE LM adjusted effect: &quot;</span>, <span class="fu">grab_mean_and_se</span>(<span class="st">&#39;fixed_effect_linear_adj&#39;</span>)))</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;FE LM adjusted effect: -0.685 (0.975)&quot;</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;FE LM adjusted effect: -0.863 (0.714)&quot;</span></span>
 <span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;AR LM effect: &quot;</span>, <span class="fu">grab_mean_and_se</span>(<span class="st">&#39;auto_regressive_linear&#39;</span>)))</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;AR LM effect: -0.64 (0.428)&quot;</span></span></code></pre></div>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;AR LM effect: -0.513 (0.392)&quot;</span></span></code></pre></div>
 <p>From the above output, we can see all models are producing similar
 estimates, across simulated point estimate draws. While all of these
 models are biased slightly downwards compared to the true effect, the
@@ -981,14 +984,14 @@ of Health (NIH) grant (P50DA046351) to RAND (PI: Stein).</p>
 <div id="references" class="section level2 unnumbered">
 <h2 class="unnumbered">References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-http://zotero.org/users/3390799/items/V3Q6ARUA" class="csl-entry">
+<div id="ref-griffinMethodologicalConsiderationsEstimating2023" class="csl-entry">
 Griffin, Beth Ann, Megan S. Schuler, Joseph Pane, Stephen W. Patrick,
 Rosanna Smart, Bradley D. Stein, Geoffrey Grimm, and Elizabeth A.
-Stuart. 2022. <span>“Methodological Considerations for Estimating Policy
+Stuart. 2023. <span>“Methodological Considerations for Estimating Policy
 Effects in the Context of Co-Occurring Policies.”</span> <em>Health
-Services and Outcomes Research Methodology</em>, July. <a href="https://doi.org/10.1007/s10742-022-00284-w">https://doi.org/10.1007/s10742-022-00284-w</a>.
+Services and Outcomes Research Methodology</em>, June. <a href="https://doi.org/10.1007/s10742-022-00284-w">https://doi.org/10.1007/s10742-022-00284-w</a>.
 </div>
-<div id="ref-http://zotero.org/users/3390799/items/ZNCVTPJF" class="csl-entry">
+<div id="ref-griffinMovingClassicDifferenceindifferences2021" class="csl-entry">
 Griffin, Beth Ann, Megan S. Schuler, Elizabeth A. Stuart, Stephen
 Patrick, Elizabeth McNeer, Rosanna Smart, David Powell, Bradley D.
 Stein, Terry L. Schell, and Rosalie Liccardo Pacula. 2021. <span>“Moving

@@ -74,7 +74,7 @@ sim_config <- optic_simulation(
   
   x                        = overdoses,
   models                   = sim_models,
-  iters                    = 100,
+  iters                    = 10, 
   method                   = "no_confounding",
   unit_var                 = "state",
   treat_var                = "state",
